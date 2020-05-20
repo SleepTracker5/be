@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
+    "target": "es5", // Specify ECMAScript target version
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ], // List of library files to be included in the compilation
+    "skipLibCheck": true, // Skip type checking of all declaration files
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+    "strict": false, // Enable all strict type checking options
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+    "module": "esnext", // Specify module code generation
+    "moduleResolution": "node", // Resolve modules using Node.js style
+    "resolveJsonModule": true, // Include modules imported with .json extension
+    "jsx": "react", // Support JSX in .tsx files
+    "sourceMap": true, // Generate corrresponding .map file
+    "declaration": true, // Generate corresponding .d.ts file 
+    "noUnusedLocals": true, // Report errors on unused locals
+    "noUnusedParameters": false, // Report errors on unused parameters
+    "experimentalDecorators": true, // Enables experimental support for ES decorators
+    "noFallthroughCasesInSwitch": true // Report errors for fallthrough cases in switch statement
+  },
+  "exclude": [
+    "node_modules", "build", "app"
+  ]
+}
