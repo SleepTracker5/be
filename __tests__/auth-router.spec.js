@@ -36,7 +36,7 @@ const testUser = {
 };
 
 const usernameNotFoundError = {
-  message: "Not Found",
+  message: "Invalid Username",
   validation: ["There was a problem retrieving the username"],
   data: {},
 };
@@ -157,7 +157,7 @@ describe("the auth route", () => {
         const loginRes = await request(server)
           .post("/api/login")
           .send({ username: "BadUsername", password: hash });
-        expect(loginRes.statusCode).toBe(404);
+        expect(loginRes.statusCode).toBe(400);
         expect(loginRes.type).toBe("application/json");
         expect(loginRes.body).toEqual(usernameNotFoundError);
         done();
@@ -183,7 +183,7 @@ describe("the auth route", () => {
         const loginRes = await request(server)
           .post("/api/login")
           .send({ username: "BadUsername", password: hash });
-        expect(loginRes.statusCode).toBe(404);
+        expect(loginRes.statusCode).toBe(400);
         expect(loginRes.type).toBe("application/json");
         expect(loginRes.body).toEqual(usernameNotFoundError);
         done();

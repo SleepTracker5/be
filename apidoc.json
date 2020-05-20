@@ -1,0 +1,8 @@
+{
+  "name": "Generic sqlite3 API Documentation",
+  "version": "1.0.0",
+  "description": "A generic sqlite3 for rapid development and prototyping",
+  "template": {
+    "forceLanguage": "en"
+  }
+}
