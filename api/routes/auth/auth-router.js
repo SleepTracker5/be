@@ -35,8 +35,7 @@ const authError = {
  *  "password": "1234",
  *  "role": 1,
  *  "first_name": "David",
- *  "last_name": "White",
- *  "img_url": "https://unsplash.com/photos/my-photo-id"
+ *  "last_name": "White"
  * }
  * @apiSuccess user The object containing the new user data
  * @apiSuccessExample {json} Success Response:
@@ -51,9 +50,7 @@ const authError = {
  *      "role": 1,
  *      "first_name": "David",
  *      "last_name": "White",
- *      "email": null,
- *      "bio": null,
- *      "img_url": "https://unsplash.com/photos/my-photo-id"
+ *      "email": null
  *    }
  * }
  * @apiErrorExample {json} Invalid Username:
@@ -76,6 +73,91 @@ router.post("/register", validateUniqueUsername, async (req, res) => {
       message: `Registered ${newUser.username} successfully`,
       validation: [],
       data: { user: newUser },
+    });
+  } catch (err) {
+    errDetail(res, err);
+  }
+});
+
+/**
+ * @api {post} /api/login Login a User
+ * @apiGroup Auth
+ * @apiDescription Registers a New User
+ * @apiParam {String} username The username for the new user (*required*)
+ * @apiParam {String} password The password for the new user (*required*)
+ * @apiParamExample {json} Request Example:
+ * {
+ *  "username": "david1234",
+ *  "password": "1234"
+ * }
+ * @apiSuccess [user, token] The user object and the JWT
+ * @apiSuccessExample {json} Success Response:
+ * Status 200: Success
+ * {
+ *  "message": "Welcome, david1234!",
+ *  "validation": [],
+ *  "data": {
+ *    "user": {
+ *      "id": 3,
+ *      "username": "david1234",
+ *      "role": 1,
+ *      "first_name": "David",
+ *      "last_name": "White",
+ *      "email": null
+ *    },
+ *    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ey..."
+ *  }
+ * @apiErrorExample {json} Invalid Credentials:
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ * @apiErrorExample {json} Username Not Found:
+ * {
+ *  "message": "Not Found",
+ *  "validation": [
+ *    "There was a problem retrieving the username"
+ *   ],
+ *  "data": {}
+ * }
+} 
+ */
+router.post("/login", validateUsername, async (req, res) => {
+  try {
+    // Retrieve the user from the dbase
+    const { username, password } = req.body;
+    const user = await findBy({ username });
+
+    if (!user) {
+      return res.status(401).json(authError);
+    }
+
+    // Auth in
+    const authenticated = bcrypt.compareSync(password, user.password);
+    if (!authenticated) {
+      res.status(401).json(authError);
+    }
+    delete user.password; // This is no longer needed
+
+    // Create the JWT token
+    const data = {
+      id: user.id,
+      role: user.role,
+    };
+    const token = jwt.sign(data, process.env.JWT_SECRET, {
+      expiresIn: "120m",
+    });
+    res.cookie("token", token);
+
+    // Send the data back, including the token
+    res.status(200).json({
+      message: `Welcome, ${user.username}!`,
+      validation: [],
+      data: {
+        user,
+        token,
+      },
     });
   } catch (err) {
     errDetail(res, err);
