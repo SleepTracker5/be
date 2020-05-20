@@ -3,8 +3,42 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 // Db helpers, utils
-const { findBy } = require("./users-model");
-const { errDetail } = require("../../utils/utils");
+const { find, findBy } = require("./users-model");
+const { errDetail, sanitizeUser } = require("../../utils/utils");
+
+// Objects
+const authError = {
+  message: "Invalid credentials",
+  validation: [],
+  data: {},
+};
+
+router.get("/", decodeJWT, async (req, res) => {
+  try {
+    const users = await find();
+    res.status(200).json({
+      message: "Success",
+      validation: [],
+      data: users,
+    });
+  } catch (err) {
+    errDetail(res, err);
+  }
+});
+
+router.get("/:id", validateUserId, async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const user = await findBy({ id });
+    res.status(200).json({
+      message: "Success",
+      validation: [],
+      data: sanitizeUser(user),
+    });
+  } catch (err) {
+    errDetail(res, err);
+  }
+});
 
 // Middleware
 /**
