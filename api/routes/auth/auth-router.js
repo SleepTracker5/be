@@ -1,5 +1,86 @@
 const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const router = express.Router({ mergeParams: true });
+
+// Subroutes
+const restricted = require("../../middleware/restricted-middleware");
+const userRoute = require("../users/users-router");
+router.use("/users", restricted(), userRoute);
+
+// Db helper fns
+const { findBy, insert } = require("../users/users-model");
+
+// Constants
+const authError = {
+  message: "Invalid Credentials",
+  validation: [],
+  data: {},
+};
+/**
+ * @api {post} /api/register Registers a new user
+ * @apiGroup Auth
+ * @apiDescription Registers a New User
+ * @apiParam {String} username The username for the new user     (*required*)
+ * @apiParam {String} password The password for the new user     (*required*)
+ * @apiParam {Integer} role The role for the new user            (*required*)
+ * @apiParam {String} first_name The first name for the new user
+ * @apiParam {String} last_name The last name for the new user
+ * @apiParam {String} email The email for the new user
+ * @apiParam {String} bio The bio text for the new user
+ * @apiParam {String} img_url The url to the user's picture
+ * @apiParamExample {json} Request Example:
+ * {
+ *  "username": "david1234",
+ *  "password": "1234",
+ *  "role": 1,
+ *  "first_name": "David",
+ *  "last_name": "White",
+ *  "img_url": "https://unsplash.com/photos/my-photo-id"
+ * }
+ * @apiSuccess user The object containing the new user data
+ * @apiSuccessExample {json} Success Response:
+ * Status 201: Created
+ * {
+ *  "message": "Registered david1234 successfully",
+ *  "validation": [],
+ *  "data": {
+ *    "user": {
+ *      "id": 3,
+ *      "username": "david1234",
+ *      "role": 1,
+ *      "first_name": "David",
+ *      "last_name": "White",
+ *      "email": null,
+ *      "bio": null,
+ *      "img_url": "https://unsplash.com/photos/my-photo-id"
+ *    }
+ * }
+ * @apiErrorExample {json} Invalid Username:
+ * {
+ *  "message": "Invalid Username",
+ *  "validation": [
+ *    "Username is invalid"
+ *  ],
+ *  "data": {}
+ * }
+}
+ */
+router.post("/register", validateUniqueUsername, async (req, res) => {
+  try {
+    const user = req.body;
+    const hash = bcrypt.hashSync(req.body.password, Number(process.env.HASHES));
+    user.password = hash;
+    const newUser = await insert(user);
+    res.status(201).json({
+      message: `Registered ${newUser.username} successfully`,
+      validation: [],
+      data: { user: newUser },
+    });
+  } catch (err) {
+    errDetail(res, err);
+  }
+});
 
 /**
  * @function validateUsername: Validate the the id exists before submitting req
