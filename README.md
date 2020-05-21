@@ -1,6 +1,6 @@
 <a name="top"></a>
 
-# Sleep Tracker API Documentation v1.0.0
+# Sleep Tracker API Documentation v1.0.3
 
 A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
 
@@ -37,10 +37,10 @@ POST /api/login
 
 ### Parameters - `Parameter`
 
-| Name     | Type     | Description                                              |
-| -------- | -------- | -------------------------------------------------------- |
-| username | `String` | <p>The username for the new user (<em>required</em>)</p> |
-| password | `String` | <p>The password for the new user (<em>required</em>)</p> |
+| Name     | Type     | Description                          |
+| -------- | -------- | ------------------------------------ |
+| username | `String` | <p>The username for the new user</p> |
+| password | `String` | <p>The password for the new user</p> |
 
 ### Parameters examples
 
@@ -117,12 +117,14 @@ POST /api/register
 
 ### Parameters - `Parameter`
 
-| Name     | Type      | Description                                                    |
-| -------- | --------- | -------------------------------------------------------------- |
-| username | `String`  | <p>The username for the new user (<em>required</em>)</p>       |
-| password | `String`  | <p>The password for the new user (<em>required</em>)</p>       |
-| role     | `Integer` | <p>The role for the new user (<em>required</em>)</p>           |
-| String   |           | **optional** <p>first_name The first name for the new user</p> |
+| Name       | Type      | Description                                         |
+| ---------- | --------- | --------------------------------------------------- |
+| username   | `String`  | <p>The username for the new user</p>                |
+| password   | `String`  | <p>The password for the new user</p>                |
+| role       | `Integer` | <p>The role for the new user</p>                    |
+| first_name | `String`  | **optional** <p>The first name for the new user</p> |
+| last_name  | `String`  | **optional** <p>The last name for the new user</p>  |
+| email      | `String`  | **optional** <p>The email for the new user</p>      |
 
 ### Parameters examples
 
