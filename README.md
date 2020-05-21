@@ -2,8 +2,10 @@
 
 # Sleep Tracker API Documentation v1.0.0
 
-A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs
+A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
 
+- [Deployment](#Deployment)
+  - [Heroku](#Heroku)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
@@ -12,6 +14,12 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
   - [Get a User by Id](#Get-a-User-by-Id)
 
 ---
+
+# <a name='Deployment'></a> Deployment
+
+## <a name='Heroku'></a> Heroku
+
+<p>The API is deployed on the Heroku free tier. Please allow 5-10 seconds for Heroku to "wake up" the connection when using an endpoint for the first time that day. The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
 
 # <a name='Auth'></a> Auth
 

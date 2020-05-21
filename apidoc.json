@@ -1,7 +1,7 @@
 {
-  "name": "Generic sqlite3 API Documentation",
-  "version": "1.0.0",
-  "description": "A generic sqlite3 for rapid development and prototyping",
+  "name": "Sleep Tracker API Documentation",
+  "version": "1.0.3",
+  "description": "A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.",
   "template": {
     "forceLanguage": "en"
   }
