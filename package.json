@@ -14,7 +14,7 @@
     "lint-staged": "lint-staged",
     "server": "cross-env NODE_ENV=development nodemon -r dotenv/config index.js",
     "start": "cross-env NODE_ENV=production node index.js",
-    "doc": "apidoc -i api -o apidoc-out && apidoc-markdown -p apidoc-out -o README.md && rm -rf apidoc-out",
+    "docs": "apidoc -i api -o apidoc-out && apidoc-markdown -p apidoc-out -o README.md && rm -rf apidoc-out",
     "check-types": "tsc",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts)\"",
     "format": "npm run prettier -- --write",

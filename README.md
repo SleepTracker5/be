@@ -1,9 +1,13 @@
 <a name="top"></a>
 
-# Sleep Tracker API Documentation v1.0.0
+# Sleep Tracker API Documentation v1.0.3
 
-A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs
+A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
 
+- [Deployment](#Deployment)
+  - [Heroku](#Heroku)
+- [Data Standarization](#DataStandardization)
+  - [Response Shape](#ResponseShape)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
@@ -12,6 +16,58 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
   - [Get a User by Id](#Get-a-User-by-Id)
 
 ---
+
+# <a name='Deployment'></a> Deployment
+
+## <a name='Heroku'></a> Heroku
+
+<p>The API is deployed on the Heroku free tier. Please allow 5-10 seconds for Heroku to "wake up" the connection when using an endpoint for the first time that day.
+
+The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
+
+# <a name='DataStandardization'></a> Data Standardization
+
+## <a name='ResponseShape'></a> Response Shape
+
+<p>The API responses conform to a standard shape comprised of the following properties:
+
+| Name       | Type     | Description                                              |
+| ---------- | -------- | -------------------------------------------------------- |
+| message    | `String` | <p>A status message indicating the request status</p>    |
+| validation | `Array`  | <p>An array of validation errors</p>                     |
+| data       | `Object` | <p>An object containing any data returned by the API</p> |
+
+`json` - Standard Response Shape Example:
+
+```json
+{
+  "message": "",
+  "validation": [],
+  "data": {}
+}
+```
+
+## Tips for Using Axios
+
+<p>Since axios returns data in an object that also has a `data` property, you should plan to access the data from the API requests by referencing `res.data.data`. If you would prefer to rename the `data` property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from `data` to `body` (to mimic the shape returned by the fetch API)</p>
+
+```axios-interceptor-example.js
+export const axiosWithAuth = () => {
+  const instance = axios.create({
+    baseURL: "http://url-here/api",
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  });
+  // Reshape the response to avoid res.data.data
+  instance.interceptors.response.use((response) => {
+    const body = { ...response.data };
+    delete response.data; // remove the data property
+    return { ...response, body };
+  });
+  return instance;
+};
+```
 
 # <a name='Auth'></a> Auth
 
@@ -27,10 +83,10 @@ POST /api/login
 
 ### Parameters - `Parameter`
 
-| Name     | Type     | Description                                              |
-| -------- | -------- | -------------------------------------------------------- |
-| username | `String` | <p>The username for the new user (<em>required</em>)</p> |
-| password | `String` | <p>The password for the new user (<em>required</em>)</p> |
+| Name     | Type     | Description                          |
+| -------- | -------- | ------------------------------------ |
+| username | `String` | <p>The username for the new user</p> |
+| password | `String` | <p>The password for the new user</p> |
 
 ### Parameters examples
 
@@ -47,9 +103,9 @@ POST /api/login
 
 #### Success response - `Success 200`
 
-| Name | Type   | Description                          |
-| ---- | ------ | ------------------------------------ |
-| data | `json` | <p>The user object and the token</p> |
+| Name | Type     | Description                          |
+| ---- | -------- | ------------------------------------ |
+| user | `Object` | <p>The user object and the token</p> |
 
 ### Success response example
 
@@ -107,12 +163,14 @@ POST /api/register
 
 ### Parameters - `Parameter`
 
-| Name     | Type      | Description                                                    |
-| -------- | --------- | -------------------------------------------------------------- |
-| username | `String`  | <p>The username for the new user (<em>required</em>)</p>       |
-| password | `String`  | <p>The password for the new user (<em>required</em>)</p>       |
-| role     | `Integer` | <p>The role for the new user (<em>required</em>)</p>           |
-| String   |           | **optional** <p>first_name The first name for the new user</p> |
+| Name       | Type      | Description                                         |
+| ---------- | --------- | --------------------------------------------------- |
+| username   | `String`  | <p>The username for the new user</p>                |
+| password   | `String`  | <p>The password for the new user</p>                |
+| role       | `Integer` | <p>The role for the new user</p>                    |
+| first_name | `String`  | **optional** <p>The first name for the new user</p> |
+| last_name  | `String`  | **optional** <p>The last name for the new user</p>  |
+| email      | `String`  | **optional** <p>The email for the new user</p>      |
 
 ### Parameters examples
 
@@ -132,9 +190,9 @@ POST /api/register
 
 #### Success response - `Success 200`
 
-| Name | Type | Description                                    |
-| ---- | ---- | ---------------------------------------------- |
-| user |      | <p>The object containing the new user data</p> |
+| Name | Type     | Description                                    |
+| ---- | -------- | ---------------------------------------------- |
+| user | `Object` | <p>The object containing the new user data</p> |
 
 ### Success response example
 
@@ -188,9 +246,9 @@ GET /api/users
 
 #### Success response - `Success 200`
 
-| Name  | Type | Description                     |
-| ----- | ---- | ------------------------------- |
-| users |      | <p>An array of user objects</p> |
+| Name  | Type    | Description                     |
+| ----- | ------- | ------------------------------- |
+| users | `Array` | <p>An array of user objects</p> |
 
 ### Success response example
 
@@ -256,9 +314,9 @@ GET /api/users/:id
 
 #### Success response - `Success 200`
 
-| Name | Type | Description                                |
-| ---- | ---- | ------------------------------------------ |
-| user |      | <p>An object with the user information</p> |
+| Name | Type     | Description                                |
+| ---- | -------- | ------------------------------------------ |
+| user | `Object` | <p>An object with the user information</p> |
 
 ### Success response example
 
