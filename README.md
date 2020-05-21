@@ -6,8 +6,6 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 - [Deployment](#Deployment)
   - [Heroku](#Heroku)
-- [Data Standarization](#DataStandardization)
-  - [Response Shape](#ResponseShape)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
@@ -25,9 +23,9 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
 
-# <a name='DataStandardization'></a> Data Standardization
+# <a name='Data Standarization'></a> Data Standardization
 
-## <a name='ResponseShape'></a> Response Shape
+## <a name='Response Shape`></a> Response Shape
 
 <p>The API responses conform to a standard shape comprised of the following properties:
 
@@ -47,14 +45,14 @@ The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https
 }
 ```
 
-## Tips for Using Axios
+## Tips for Accessing the Data Using Axios
 
 <p>Since axios returns data in an object that also has a `data` property, you should plan to access the data from the API requests by referencing `res.data.data`. If you would prefer to rename the `data` property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from `data` to `body` (to mimic the shape returned by the fetch API)</p>
 
 ```axios-interceptor-example.js
 export const axiosWithAuth = () => {
   const instance = axios.create({
-    baseURL: "http://url-here/api",
+    baseURL: "http://localhost:5000/api",
     headers: {
       authorization: localStorage.getItem("token"),
     },
@@ -75,7 +73,7 @@ export const axiosWithAuth = () => {
 
 [Back to top](#top)
 
-<p>Registers a New User</p>
+<p>Logs In a User</p>
 
 ```
 POST /api/login
