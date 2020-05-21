@@ -57,9 +57,9 @@ POST /api/login
 
 #### Success response - `Success 200`
 
-| Name | Type   | Description                          |
-| ---- | ------ | ------------------------------------ |
-| data | `json` | <p>The user object and the token</p> |
+| Name | Type     | Description                          |
+| ---- | -------- | ------------------------------------ |
+| user | `Object` | <p>The user object and the token</p> |
 
 ### Success response example
 
@@ -144,9 +144,9 @@ POST /api/register
 
 #### Success response - `Success 200`
 
-| Name | Type | Description                                    |
-| ---- | ---- | ---------------------------------------------- |
-| user |      | <p>The object containing the new user data</p> |
+| Name | Type     | Description                                    |
+| ---- | -------- | ---------------------------------------------- |
+| user | `Object` | <p>The object containing the new user data</p> |
 
 ### Success response example
 
@@ -200,9 +200,9 @@ GET /api/users
 
 #### Success response - `Success 200`
 
-| Name  | Type | Description                     |
-| ----- | ---- | ------------------------------- |
-| users |      | <p>An array of user objects</p> |
+| Name  | Type    | Description                     |
+| ----- | ------- | ------------------------------- |
+| users | `Array` | <p>An array of user objects</p> |
 
 ### Success response example
 
@@ -268,9 +268,9 @@ GET /api/users/:id
 
 #### Success response - `Success 200`
 
-| Name | Type | Description                                |
-| ---- | ---- | ------------------------------------------ |
-| user |      | <p>An object with the user information</p> |
+| Name | Type     | Description                                |
+| ---- | -------- | ------------------------------------------ |
+| user | `Object` | <p>An object with the user information</p> |
 
 ### Success response example
 
