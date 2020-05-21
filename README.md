@@ -1,21 +1,22 @@
 <a name="top"></a>
-# Generic sqlite3 API Documentation v1.0.0
 
-A generic sqlite3 for rapid development and prototyping
+# Sleep Tracker API Documentation v1.0.0
 
- - [Auth](#Auth)
-   - [Login a User](#Login-a-User)
-   - [Registers a new user](#Registers-a-new-user)
- - [Users](#Users)
-   - [Get All Users](#Get-All-Users)
-   - [Get a User by Id](#Get-a-User-by-Id)
+A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs
 
-___
+- [Auth](#Auth)
+  - [Login a User](#Login-a-User)
+  - [Registers a new user](#Registers-a-new-user)
+- [Users](#Users)
+  - [Get All Users](#Get-All-Users)
+  - [Get a User by Id](#Get-a-User-by-Id)
 
+---
 
 # <a name='Auth'></a> Auth
 
 ## <a name='Login-a-User'></a> Login a User
+
 [Back to top](#top)
 
 <p>Registers a New User</p>
@@ -26,18 +27,19 @@ POST /api/login
 
 ### Parameters - `Parameter`
 
-| Name     | Type       | Description                           |
-|----------|------------|---------------------------------------|
+| Name     | Type     | Description                                              |
+| -------- | -------- | -------------------------------------------------------- |
 | username | `String` | <p>The username for the new user (<em>required</em>)</p> |
 | password | `String` | <p>The password for the new user (<em>required</em>)</p> |
 
 ### Parameters examples
+
 `json` - Request Example:
 
 ```json
 {
- "username": "david1234",
- "password": "1234"
+  "username": "david1234",
+  "password": "1234"
 }
 ```
 
@@ -45,8 +47,8 @@ POST /api/login
 
 #### Success response - `Success 200`
 
-| Name     | Type       | Description                           |
-|----------|------------|---------------------------------------|
+| Name | Type   | Description                          |
+| ---- | ------ | ------------------------------------ |
 | data | `json` | <p>The user object and the token</p> |
 
 ### Success response example
@@ -77,9 +79,9 @@ HTTP/1.1 200: Success
 
 ```json
 {
- "message": "Invalid Credentials",
- "validation": [],
- "data": {}
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
 }
 ```
 
@@ -87,15 +89,14 @@ HTTP/1.1 200: Success
 
 ```json
 {
- "message": "Invalid Username",
- "validation": [
-   "There was a problem retrieving the username"
-  ],
- "data": {}
+  "message": "Invalid Username",
+  "validation": ["There was a problem retrieving the username"],
+  "data": {}
 }
 ```
 
 ## <a name='Registers-a-new-user'></a> Registers a new user
+
 [Back to top](#top)
 
 <p>Registers a New User</p>
@@ -106,23 +107,24 @@ POST /api/register
 
 ### Parameters - `Parameter`
 
-| Name     | Type       | Description                           |
-|----------|------------|---------------------------------------|
-| username | `String` | <p>The username for the new user     (<em>required</em>)</p> |
-| password | `String` | <p>The password for the new user     (<em>required</em>)</p> |
-| role | `Integer` | <p>The role for the new user            (<em>required</em>)</p> |
-| String |  | **optional** <p>first_name The first name for the new user</p> |
+| Name     | Type      | Description                                                    |
+| -------- | --------- | -------------------------------------------------------------- |
+| username | `String`  | <p>The username for the new user (<em>required</em>)</p>       |
+| password | `String`  | <p>The password for the new user (<em>required</em>)</p>       |
+| role     | `Integer` | <p>The role for the new user (<em>required</em>)</p>           |
+| String   |           | **optional** <p>first_name The first name for the new user</p> |
 
 ### Parameters examples
+
 `json` - Request Example:
 
 ```json
 {
- "username": "david1234",
- "password": "1234",
- "role": 1,
- "first_name": "David",
- "last_name": "White"
+  "username": "david1234",
+  "password": "1234",
+  "role": 1,
+  "first_name": "David",
+  "last_name": "White"
 }
 ```
 
@@ -130,9 +132,9 @@ POST /api/register
 
 #### Success response - `Success 200`
 
-| Name     | Type       | Description                           |
-|----------|------------|---------------------------------------|
-| user |  | <p>The object containing the new user data</p> |
+| Name | Type | Description                                    |
+| ---- | ---- | ---------------------------------------------- |
+| user |      | <p>The object containing the new user data</p> |
 
 ### Success response example
 
@@ -173,6 +175,7 @@ HTTP/1.1 400: Bad Request
 # <a name='Users'></a> Users
 
 ## <a name='Get-All-Users'></a> Get All Users
+
 [Back to top](#top)
 
 <p>Get All Users</p>
@@ -185,9 +188,9 @@ GET /api/users
 
 #### Success response - `Success 200`
 
-| Name     | Type       | Description                           |
-|----------|------------|---------------------------------------|
-| users |  | <p>An array of user objects</p> |
+| Name  | Type | Description                     |
+| ----- | ---- | ------------------------------- |
+| users |      | <p>An array of user objects</p> |
 
 ### Success response example
 
@@ -233,13 +236,14 @@ HTTP/1.1 200: OK
 
 ```json
 {
- "message": "Invalid Credentials",
- "validation": [],
- "data": {}
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
 }
 ```
 
 ## <a name='Get-a-User-by-Id'></a> Get a User by Id
+
 [Back to top](#top)
 
 <p>Get a User by Id</p>
@@ -252,9 +256,9 @@ GET /api/users/:id
 
 #### Success response - `Success 200`
 
-| Name     | Type       | Description                           |
-|----------|------------|---------------------------------------|
-| user |  | <p>An object with the user information</p> |
+| Name | Type | Description                                |
+| ---- | ---- | ------------------------------------------ |
+| user |      | <p>An object with the user information</p> |
 
 ### Success response example
 
@@ -282,8 +286,8 @@ HTTP/1.1 200: OK
 
 ```json
 {
- "message": "Invalid Credentials",
- "validation": [],
- "data": {}
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
 }
 ```
