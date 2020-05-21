@@ -21,12 +21,12 @@ const authError = {
  * @api {post} /api/register Registers a new user
  * @apiGroup Auth
  * @apiDescription Registers a New User
- * @apiParam {String} username The username for the new user     (*required*)
- * @apiParam {String} password The password for the new user     (*required*)
- * @apiParam {Integer} role The role for the new user            (*required*)
- * @apiParam [String] first_name The first name for the new user
- * @apiParam [String] last_name The last name for the new user
- * @apiParam [String] email The email for the new user
+ * @apiParam {String} username The username for the new user
+ * @apiParam {String} password The password for the new user
+ * @apiParam {Integer} role The role for the new user
+ * @apiParam {String} [first_name] The first name for the new user
+ * @apiParam {String} [last_name] The last name for the new user
+ * @apiParam {String} [email] The email for the new user
  * @apiParamExample {json} Request Example:
  * {
  *  "username": "david1234",
@@ -35,7 +35,7 @@ const authError = {
  *  "first_name": "David",
  *  "last_name": "White"
  * }
- * @apiSuccess user The object containing the new user data
+ * @apiSuccess {Object} user The object containing the new user data
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 201: Created
  * {
@@ -81,14 +81,14 @@ router.post("/register", validateUniqueUsername, async (req, res) => {
  * @api {post} /api/login Login a User
  * @apiGroup Auth
  * @apiDescription Registers a New User
- * @apiParam {String} username The username for the new user (*required*)
- * @apiParam {String} password The password for the new user (*required*)
+ * @apiParam {String} username The username for the new user
+ * @apiParam {String} password The password for the new user
  * @apiParamExample {json} Request Example:
  * {
  *  "username": "david1234",
  *  "password": "1234"
  * }
- * @apiSuccess {json} data The user object and the token
+ * @apiSuccess {Object} user The user object and the token
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200: Success
  * {
