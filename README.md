@@ -23,6 +23,50 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
 
+# <a name='Data Standarization'></a> Data Standardization
+
+## <a name='Response Shape`></a> Response Shape
+
+<p>The API responses conform to a standard shape comprised of the following properties:
+
+| Name       | Type     | Description                                              |
+| ---------- | -------- | -------------------------------------------------------- |
+| message    | `String` | <p>A status message indicating the request status</p>    |
+| validation | `Array`  | <p>An array of validation errors</p>                     |
+| data       | `Object` | <p>An object containing any data returned by the API</p> |
+
+`json` - Standard Response Shape Example:
+
+```json
+{
+  "message": "",
+  "validation": [],
+  "data": {}
+}
+```
+
+## Tips for Using Axios
+
+<p>Since axios returns data in an object that also has a `data` property, you should plan to access the data from the API requests by referencing `res.data.data`. If you would prefer to rename the `data` property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from `data` to `body` (to mimic the shape returned by the fetch API)</p>
+
+```axios-interceptor-example.js
+export const axiosWithAuth = () => {
+  const instance = axios.create({
+    baseURL: "http://url-here/api",
+    headers: {
+      authorization: localStorage.getItem("token"),
+    },
+  });
+  // Reshape the response to avoid res.data.data
+  instance.interceptors.response.use((response) => {
+    const body = { ...response.data };
+    delete response.data; // remove the data property
+    return { ...response, body };
+  });
+  return instance;
+};
+```
+
 # <a name='Auth'></a> Auth
 
 ## <a name='Login-a-User'></a> Login a User
