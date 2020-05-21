@@ -16,7 +16,7 @@ exports.seed = function (knex) {
           role: 1,
           first_name: "Test",
           last_name: "User 1",
-          email: "test@testing.com",
+          email: "user1@lambda.com",
         },
         {
           id: 2,
@@ -25,7 +25,7 @@ exports.seed = function (knex) {
           role: 1,
           first_name: "Test",
           last_name: "User 2",
-          email: "test@testing.com",
+          email: "user2@lambda.com",
         },
         {
           id: 3,
@@ -34,7 +34,16 @@ exports.seed = function (knex) {
           role: 1,
           first_name: "Test",
           last_name: "User 3",
-          email: "test@testing.com",
+          email: "user3@lambda.com",
+        },
+        {
+          id: 4,
+          username: "admin1",
+          password: hash,
+          role: 1,
+          first_name: "Test",
+          last_name: "Admin1",
+          email: "admin1@lambda.com",
         },
       ]);
     });

@@ -13,6 +13,50 @@ const authError = {
   data: {},
 };
 
+/**
+ * @api {get} /api/users Get All Users
+ * @apiGroup Users
+ * @apiDescription Get All Users
+ * @apiSuccess {Array} users An array of user objects
+ * @apiSuccessExample {json} Success Response:
+ * HTTP/1.1 200: OK
+ * {
+ *   "message": "Success",
+ *   "validation": [],
+ *   "data": [
+ *       {
+ *           "id": 1,
+ *           "username": "test1",
+ *           "role": 1,
+ *           "first_name": "Test",
+ *           "last_name": "User 1",
+ *           "email": "test@testing.com"
+ *       },
+ *       {
+ *           "id": 2,
+ *           "username": "test2",
+ *           "role": 1,
+ *           "first_name": "Test",
+ *           "last_name": "User 2",
+ *           "email": "test@testing.com"
+ *       },
+ *       {
+ *           "id": 3,
+ *           "username": "test3",
+ *           "role": 1,
+ *           "first_name": "Test",
+ *           "last_name": "User 3",
+ *           "email": "test@testing.com"
+ *       }
+ *   ]
+ *}
+ * @apiErrorExample {json} Invalid Credentials:
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
 router.get("/", decodeJWT, async (req, res) => {
   try {
     const users = await find();
@@ -26,6 +70,32 @@ router.get("/", decodeJWT, async (req, res) => {
   }
 });
 
+/**
+ * @api {get} /api/users/:id Get a User by Id
+ * @apiGroup Users
+ * @apiDescription Get a User by Id
+ * @apiSuccess {Object} user An object with the user information
+ * @apiSuccessExample {json} Success Response:
+ * HTTP/1.1 200: OK
+ * {
+ *   "message": "Success",
+ *   "validation": [],
+ *   "data": {
+ *            "id": 1,
+ *            "username": "test1",
+ *            "role": 1,
+ *            "first_name": "Test",
+ *            "last_name": "User 1",
+ *            "email": "test@testing.com"
+ *    }
+ * }
+ * @apiErrorExample {json} Invalid Credentials:
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
 router.get("/:id", validateUserId, async (req, res) => {
   try {
     const id = Number(req.params.id);

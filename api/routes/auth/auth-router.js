@@ -21,14 +21,12 @@ const authError = {
  * @api {post} /api/register Registers a new user
  * @apiGroup Auth
  * @apiDescription Registers a New User
- * @apiParam {String} username The username for the new user     (*required*)
- * @apiParam {String} password The password for the new user     (*required*)
- * @apiParam {Integer} role The role for the new user            (*required*)
- * @apiParam {String} first_name The first name for the new user
- * @apiParam {String} last_name The last name for the new user
- * @apiParam {String} email The email for the new user
- * @apiParam {String} bio The bio text for the new user
- * @apiParam {String} img_url The url to the user's picture
+ * @apiParam {String} username The username for the new user
+ * @apiParam {String} password The password for the new user
+ * @apiParam {Integer} role The role for the new user
+ * @apiParam {String} [first_name] The first name for the new user
+ * @apiParam {String} [last_name] The last name for the new user
+ * @apiParam {String} [email] The email for the new user
  * @apiParamExample {json} Request Example:
  * {
  *  "username": "david1234",
@@ -37,9 +35,9 @@ const authError = {
  *  "first_name": "David",
  *  "last_name": "White"
  * }
- * @apiSuccess user The object containing the new user data
+ * @apiSuccess {Object} user The object containing the new user data
  * @apiSuccessExample {json} Success Response:
- * Status 201: Created
+ * HTTP/1.1 201: Created
  * {
  *  "message": "Registered david1234 successfully",
  *  "validation": [],
@@ -54,6 +52,7 @@ const authError = {
  *    }
  * }
  * @apiErrorExample {json} Invalid Username:
+ * HTTP/1.1 400: Bad Request
  * {
  *  "message": "Invalid Username",
  *  "validation": [
@@ -61,7 +60,6 @@ const authError = {
  *  ],
  *  "data": {}
  * }
-}
  */
 router.post("/register", validateUniqueUsername, async (req, res) => {
   try {
@@ -83,16 +81,16 @@ router.post("/register", validateUniqueUsername, async (req, res) => {
  * @api {post} /api/login Login a User
  * @apiGroup Auth
  * @apiDescription Registers a New User
- * @apiParam {String} username The username for the new user (*required*)
- * @apiParam {String} password The password for the new user (*required*)
+ * @apiParam {String} username The username for the new user
+ * @apiParam {String} password The password for the new user
  * @apiParamExample {json} Request Example:
  * {
  *  "username": "david1234",
  *  "password": "1234"
  * }
- * @apiSuccess [user, token] The user object and the JWT
+ * @apiSuccess {Object} user The user object and the token
  * @apiSuccessExample {json} Success Response:
- * Status 200: Success
+ * HTTP/1.1 200: Success
  * {
  *  "message": "Welcome, david1234!",
  *  "validation": [],
@@ -115,13 +113,12 @@ router.post("/register", validateUniqueUsername, async (req, res) => {
  * }
  * @apiErrorExample {json} Username Not Found:
  * {
- *  "message": "Not Found",
+ *  "message": "Invalid Username",
  *  "validation": [
  *    "There was a problem retrieving the username"
  *   ],
  *  "data": {}
  * }
-} 
  */
 router.post("/login", validateUsername, async (req, res) => {
   try {
@@ -176,8 +173,8 @@ async function validateUsername(req, res, next) {
     const { username } = req.body;
     const user = await findBy({ username });
     if (!user) {
-      return res.status(404).json({
-        message: "Not Found",
+      return res.status(400).json({
+        message: "Invalid Username",
         validation: ["There was a problem retrieving the username"],
         data: {},
       });
