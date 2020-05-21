@@ -27,7 +27,7 @@ The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https
 
 # <a name='DataStandardization'></a> Data Standardization
 
-## <a name='ResponseShape`></a> Response Shape
+## <a name='ResponseShape'></a> Response Shape
 
 <p>The API responses conform to a standard shape comprised of the following properties:
 
