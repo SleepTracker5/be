@@ -51,16 +51,16 @@ describe("the auth route", () => {
   describe("/register", () => {
     beforeEach(async done => {
       try {
-        await db("users").truncate();
+        await db("users").del();
         done();
       } catch (err) {
-        console.log("Unable to truncate the database", err);
+        console.log("Unable to del the database", err);
         done(err);
       }
     });
 
     it("inserts a new user into the db", async () => {
-      // Ensure users have been truncated properly
+      // Ensure users have been deleted properly
       const noUsers = await dbHasNoUsers();
       expect(noUsers).toBe(true);
       // Test the endpoint
@@ -74,7 +74,7 @@ describe("the auth route", () => {
     });
 
     it("doesn't insert an existing user into the database", async done => {
-      // Ensure users have been truncated properly
+      // Ensure users have been deleted properly
       let noUsers = await dbHasNoUsers();
       expect(noUsers).toBe(true);
       // Test the endpoint by registering a user
@@ -101,16 +101,16 @@ describe("the auth route", () => {
   describe("the /login route", () => {
     beforeEach(async done => {
       try {
-        await db("users").truncate();
+        await db("users").del();
         done();
       } catch (err) {
-        console.log("Unable to truncate the database", err);
+        console.log("Unable to del the database", err);
         done(err);
       }
     });
 
     it("it authenticates a correct username and password", async done => {
-      // Ensure users have been truncated properly
+      // Ensure users have been deleted properly
       let noUsers = await dbHasNoUsers();
       expect(noUsers).toBe(true);
 
@@ -142,7 +142,7 @@ describe("the auth route", () => {
     });
 
     it("won't attempt to login an invalid username", async done => {
-      // Ensure users have been truncated properly
+      // Ensure users have been deleted properly
       let noUsers = await dbHasNoUsers();
       expect(noUsers).toBe(true);
 
@@ -168,7 +168,7 @@ describe("the auth route", () => {
     });
 
     it("will throw an error if sent invalid login credentials", async done => {
-      // Ensure users have been truncated properly
+      // Ensure users have been deleted properly
       let noUsers = await dbHasNoUsers();
       expect(noUsers).toBe(true);
 
