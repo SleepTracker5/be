@@ -5,7 +5,7 @@ const db = require("../data/dbConfig");
 const { find, findBy, insert } = require("../api/routes/users/users-model");
 
 // Test helpers
-const dbHasTruncated = async () => {
+const dbHasDeleted = async () => {
   try {
     const users = await find();
     return users && users.length ? false : true;
@@ -32,10 +32,10 @@ const userLogin = {
 describe("the users model", () => {
   beforeEach(async done => {
     try {
-      await db("users").truncate();
+      await db("users").del();
       done();
     } catch (err) {
-      console.log("Unable to truncate the database", err);
+      console.log("Unable to del the database", err);
       done(err);
     }
   });
@@ -51,9 +51,9 @@ describe("the users model", () => {
   });
 
   it("should find all users", async done => {
-    // Ensure users have been truncated properly
-    const truncated = await dbHasTruncated();
-    expect(truncated).toBe(true);
+    // Ensure users have been deleted properly
+    const deleted = await dbHasDeleted();
+    expect(deleted).toBe(true);
 
     try {
       let users = await find();
@@ -70,9 +70,9 @@ describe("the users model", () => {
   });
 
   it("should insert the provided user into the db", async done => {
-    // Ensure users have been truncated properly
-    const truncated = await dbHasTruncated();
-    expect(truncated).toBe(true);
+    // Ensure users have been deleted properly
+    const deleted = await dbHasDeleted();
+    expect(deleted).toBe(true);
 
     try {
       const user = await insert(userLogin);
@@ -87,9 +87,9 @@ describe("the users model", () => {
   });
 
   it("should find a user by a provided username", async done => {
-    // Ensure users have been truncated properly
-    const truncated = await dbHasTruncated();
-    expect(truncated).toBe(true);
+    // Ensure users have been deleted properly
+    const deleted = await dbHasDeleted();
+    expect(deleted).toBe(true);
 
     try {
       const user = await insert(userLogin);

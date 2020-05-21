@@ -13,7 +13,7 @@
     "apidocs": "apidoc -i api/ -o apidoc/",
     "lint-staged": "lint-staged",
     "server": "cross-env NODE_ENV=development nodemon -r dotenv/config index.js",
-    "start": "cross-env NODE_ENV=development node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "check-types": "tsc",
     "prettier": "prettier --ignore-path .gitignore \"**/*.+(js|ts)\"",
     "format": "npm run prettier -- --write",
