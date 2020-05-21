@@ -6,6 +6,8 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 - [Deployment](#Deployment)
   - [Heroku](#Heroku)
+- [Data Standarization](#DataStandardization)
+  - [Response Shape](#ResponseShape)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
@@ -23,9 +25,9 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
 
-# <a name='Data Standarization'></a> Data Standardization
+# <a name='DataStandardization'></a> Data Standardization
 
-## <a name='Response Shape`></a> Response Shape
+## <a name='ResponseShape`></a> Response Shape
 
 <p>The API responses conform to a standard shape comprised of the following properties:
 
