@@ -14,9 +14,9 @@ const authError = {
 };
 
 /**
- * @api {get} /api/users
- * @apiGroup Restricted Routes
- * @apiDescription Gets All Users
+ * @api {get} /api/users Get All Users
+ * @apiGroup Users
+ * @apiDescription Get All Users
  * @apiSuccess users An array of user objects
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200: OK
@@ -71,10 +71,10 @@ router.get("/", decodeJWT, async (req, res) => {
 });
 
 /**
- * @api {get} /api/users
- * @apiGroup Restricted Routes
- * @apiDescription Gets All Users
- * @apiSuccess users An array of user objects
+ * @api {get} /api/users/:id Get a User by Id
+ * @apiGroup Users
+ * @apiDescription Get a User by Id
+ * @apiSuccess user An object with the user information
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200: OK
  * {
