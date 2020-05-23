@@ -110,6 +110,44 @@ router.get("/:id", validateUserId, async (req, res) => {
   }
 });
 
+/**
+ * @api {put} /api/users/:id Update a User by Id
+ * @apiGroup Users
+ * @apiDescription Update a User by Id
+ * @apiParam {*} property Any property on the user record
+ * @apiParamExample {json} Request Example:
+ * {
+ *  "role": 2
+ *  "first_name": "Updated Test",
+ * }
+ * @apiSuccess {Object} user An object with the updated information
+ * @apiSuccessExample {json} Success Response:
+ * HTTP/1.1 200: OK
+ * {
+ *   "message": "Success",
+ *   "validation": [],
+ *   "data": {
+ *            "id": 1,
+ *            "username": "test1",
+ *            "role": 2,
+ *            "first_name": "Updated Test",
+ *            "last_name": "User 1",
+ *            "email": "test@testing.com"
+ *    }
+ * }
+ * @apiErrorExample {json} Invalid Credentials:
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ * @apiErrorExample {json} Server Error (e.g. empty update sent):
+ * {
+ *  "message": "There was a problem completing the required operation",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
 router.put("/:id", validateUserId, async (req, res) => {
   try {
     const id = req.params.id;
