@@ -1,6 +1,9 @@
 const jwt = require("jsonwebtoken");
 const { errDetail } = require("../utils/utils");
 
+// constants
+const minSecurityLevel = 2;
+
 function restrict() {
   const authError = {
     message: "Invalid credentials",
@@ -16,10 +19,9 @@ function restrict() {
       }
 
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
+        if (err || decoded.role < minSecurityLevel) {
           return res.status(401).json(authError);
         }
-
         req.token = decoded;
         next();
       });
