@@ -40,7 +40,7 @@ exports.seed = function (knex) {
           id: 4,
           username: "admin1",
           password: hash,
-          role: 1,
+          role: 2,
           first_name: "Test",
           last_name: "Admin1",
           email: "admin1@lambda.com",
