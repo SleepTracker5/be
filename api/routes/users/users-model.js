@@ -7,6 +7,7 @@ module.exports = {
   find,
   findBy,
   insert,
+  update,
 };
 
 function find() {
@@ -25,5 +26,17 @@ function insert(user) {
     .then(async ids => {
       const user = await findBy({ id: ids[0] });
       return sanitizeUser(user);
+    });
+}
+
+function update(id, changes) {
+  return db("users")
+    .update(changes)
+    .where({ id })
+    .then(async res => {
+      if (res === 1) {
+        const user = await findBy({ id }); // the param
+        return sanitizeUser(user);
+      }
     });
 }
