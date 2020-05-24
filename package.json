@@ -8,7 +8,7 @@
     "node": "10.16.3"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=testing jest",
+    "test": "cross-env NODE_ENV=testing jest --runInBand",
     "test-watch": "cross-env NODE_ENV=testing jest --watch",
     "apidocs": "apidoc -i api/ -o apidoc/",
     "lint-staged": "lint-staged",
@@ -26,6 +26,9 @@
     "testEnvironment": "node",
     "setupFiles": [
       "dotenv/config"
+    ],
+    "setupFilesAfterEnv": [
+      "./test/teardown.js"
     ]
   },
   "repository": {
