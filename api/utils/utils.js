@@ -13,4 +13,8 @@ function sanitizeUser(user) {
   return user;
 }
 
-module.exports = { errDetail, sanitizeUser };
+// Helpers
+const randRange = (lower, upper) =>
+  Math.floor(Math.random() * (upper - lower + 1)) + lower;
+
+module.exports = { errDetail, sanitizeUser, randRange };
