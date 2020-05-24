@@ -4,6 +4,25 @@ const { errDetail } = require("../utils/utils");
 // constants
 const minSecurityLevel = 2;
 
+async function decodeJWT(req, res, next) {
+  // Objects
+  const authError = {
+    message: "Invalid credentials",
+    validation: [],
+    data: {},
+  };
+  const { token } = req.headers.authorization || req.cookies;
+
+  // Verify the JWT
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json(authError);
+    }
+    req.token = decoded;
+    next();
+  });
+}
+
 function restrict() {
   const authError = {
     message: "Invalid credentials",
@@ -31,4 +50,4 @@ function restrict() {
   };
 }
 
-module.exports = restrict;
+module.exports = { restrict, decodeJWT };
