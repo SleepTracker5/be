@@ -11,7 +11,8 @@ const createFakeSleep = (args, fakeSleepRecords) => {
   let [date, user_id, arr] = args;
   let days = 0;
   for (let idx = 0; idx < fakeSleepRecords; idx++) {
-    date = date.add(days, "days");
+    console.log(moment(date).format("MM/DD/YYYY HH:MM"));
+    date = moment(date).add(days, "days");
     createFakeSleepRecord(date, user_id, arr);
     days++;
   }
@@ -24,11 +25,15 @@ const createFakeSleep = (args, fakeSleepRecords) => {
  * @param {Array} arr The array of sleep entries for the user
  */
 const createFakeSleepRecord = (date, user_id, arr) => {
+  const newDate = moment(date);
   let bedTimeOffset = randRange(-1, 3);
   let sleepHours = randRange(4, 12);
   arr.push({
-    sleep_start: date.add(bedTimeOffset, "hours").valueOf(),
-    sleep_end: date.add(bedTimeOffset + sleepHours, "hours").valueOf(),
+    sleep_start: newDate
+      .add(bedTimeOffset, "hours")
+      .add(45, "minutes")
+      .valueOf(),
+    sleep_end: newDate.add(bedTimeOffset + sleepHours, "hours").valueOf(),
     user_id,
   });
 };
@@ -43,6 +48,7 @@ exports.seed = async function (knex) {
   const fakeSleepRecords = 30;
   const userData = [];
   for (let user_id of sleepUserIds.slice(2)) {
+    // I can only seed a couple of users
     let date = startDate;
     createFakeSleep([date, Number(user_id), userData], fakeSleepRecords);
   }
