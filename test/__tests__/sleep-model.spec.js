@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs");
 
 // Db helpers
 const db = require("../../data/dbConfig");
-const { find, findBy, insert } = require("../../api/routes/sleep/sleep-model");
+const { find, insert } = require("../../api/routes/sleep/sleep-model");
 const usersDb = require("../../api/routes/users/users-model");
 
 // Test helpers
@@ -63,8 +63,6 @@ describe("the entries model", () => {
   afterAll(async done => {
     try {
       await db("sleep").truncate();
-      await db.destroy();
-      //db.raw("ALTER TABLE users AUTO_INCREMENT = 1;");
       done();
     } catch (err) {
       console.log(
@@ -89,7 +87,7 @@ describe("the entries model", () => {
       expect(user.username).toBe("test User Sleep");
       expect(user.role).toBe(1);
       // Add a sleep entry
-      let entries = await find();
+      let entries = await find({});
       expect(entries).toHaveLength(0);
       await insert(sleepEntry);
       await insert(sleepEntry);
