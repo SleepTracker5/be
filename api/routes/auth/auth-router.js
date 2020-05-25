@@ -4,9 +4,14 @@ const jwt = require("jsonwebtoken");
 const router = express.Router({ mergeParams: true });
 
 // Subroutes
-const { restrict } = require("../../middleware/restricted-middleware");
+const {
+  restrict,
+  restrictByRole,
+} = require("../../middleware/restricted-middleware");
 const userRoute = require("../users/users-router");
-router.use("/users", restrict(), userRoute);
+const sleepRoute = require("../sleep/sleep-router");
+router.use("/users", restrictByRole(), userRoute);
+router.use("/sleep", restrict(), sleepRoute);
 
 // Db helper fns
 const { findBy, insert } = require("../users/users-model");
