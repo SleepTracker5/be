@@ -1,22 +1,22 @@
 const db = require("../../../data/dbConfig");
 
-module.exports = { find, findBy, findBetween, insert, update, remove };
+module.exports = { find, findBy, insert, update, remove };
 
-function find() {
-  return db("sleep");
+// prettier-ignore
+function find(query) {
+  // Timestamps run from 1900-01-01 to 9999-12-31
+  let { start = -2208970800000, end = 253402232400000 } = query ? query : {};
+  return db("sleep")
+    .whereBetween("sleep_start", [start, end]);
 }
 
 // prettier-ignore
-function findBy(field) {
+function findBy(field, query) {
+  // Timestamps run from 1900-01-01 to 9999-12-31
+  let { start = -2208970800000, end = 253402232400000 } = query ? query : {};
   return db("sleep")
-    .where(field);
-}
-
-// prettier-ignore
-function findBetween(start, end) {
-  return db("sleep")
-    .select()
-    .whereBetween("date", [start, end]);
+    .where(field)
+    .whereBetween("sleep_start", [start, end]);
 }
 
 function insert(trace) {
@@ -33,6 +33,7 @@ function insert(trace) {
 }
 
 function update(id, changes) {
+  delete changes.id;
   return db("sleep")
     .where({ id })
     .update(changes)
