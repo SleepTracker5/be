@@ -1,9 +1,9 @@
-const server = require("../api/server");
+const server = require("../../api/server");
 const request = require("supertest");
-const db = require("./../data/dbConfig");
+const db = require("../../data/dbConfig");
 
 // Middleware imports
-const errorHandler = require("../api/middleware/error-middleware");
+const errorHandler = require("../../api/middleware/error-middleware");
 
 const errorObj = {
   Test: {
