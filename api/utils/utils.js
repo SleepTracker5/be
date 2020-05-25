@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 function errDetail(res, err) {
   console.log(err);
   return res.status(500).json({
@@ -13,8 +15,22 @@ function sanitizeUser(user) {
   return user;
 }
 
-// Helpers
+function validateTime(time) {
+  // Format the timestamp
+  if (!time) {
+    return undefined;
+  }
+
+  let formattedTime;
+  if (isNaN(time)) {
+    formattedTime = moment(time).format("x");
+  } else {
+    formattedTime = moment(time, "x").format("x");
+  }
+  return formattedTime;
+}
+
 const randRange = (lower, upper) =>
   Math.floor(Math.random() * (upper - lower + 1)) + lower;
 
-module.exports = { errDetail, sanitizeUser, randRange };
+module.exports = { errDetail, sanitizeUser, validateTime, randRange };
