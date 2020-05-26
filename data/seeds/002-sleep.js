@@ -55,7 +55,7 @@ exports.seed = async function (knex) {
 
   // prettier-ignore
   return knex("sleep")
-    .truncate()
+    .del()
     .then(function () {
       // Inserts seed entries
       return knex("sleep").insert(userData);
