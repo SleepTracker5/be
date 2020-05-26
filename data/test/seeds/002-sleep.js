@@ -1,6 +1,6 @@
 const moment = require("moment");
-const { find } = require("../../api/routes/users/users-model");
-const { randRange } = require("../../api/utils/utils");
+const { find } = require("../../../api/routes/users/users-model");
+const { randRange } = require("../../../api/utils/utils");
 
 /**
  * @function createFakeSleep Create a series of fake sleep entries

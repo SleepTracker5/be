@@ -1,5 +1,5 @@
-const { find } = require("../../api/routes/sleep/sleep-model");
-const { randRange } = require("../../api/utils/utils");
+const { find } = require("../../../api/routes/sleep/sleep-model");
+const { randRange } = require("../../../api/utils/utils");
 
 /**
  * @function createFakeMood Create a series of fake sleep entries
