@@ -46,7 +46,7 @@ exports.seed = async function (knex) {
 
   // prettier-ignore
   return knex("mood")
-    .truncate()
+    .del()
     .then(function () {
       // Inserts seed entries
       return knex("mood").insert(moodData);
