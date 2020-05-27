@@ -1,8 +1,15 @@
+// @ts-ignore
 const bcrypt = require("bcryptjs");
 
 // Db helpers
 const db = require("../../data/dbConfig");
-const { find, insert } = require("../../api/routes/sleep/sleep-model");
+const {
+  find,
+  findBy,
+  insert,
+  update,
+  remove,
+} = require("../../api/routes/sleep/sleep-model");
 const usersDb = require("../../api/routes/users/users-model");
 
 // Test helpers
@@ -22,6 +29,7 @@ const dbHasDeleted = async () => {
 const sleepEntry = {
   sleep_start: 1608512400000,
   sleep_end: 1608552000000,
+  sleep_goal: 8,
   user_id: 1,
 };
 
@@ -101,51 +109,92 @@ describe("the entries model", () => {
     }
   });
 
-  // // Test the findBy method
-  // it("should find a entry by a provided username", async done => {
-  //   // Ensure entries have been deleted properly
-  //   const deleted = await dbHasDeleted();
-  //   expect(deleted).toBe(true);
+  // Test the findBy method
+  it("should find an entry by a provided record id", async done => {
+    // Ensure entries have been deleted properly
+    const deleted = await dbHasDeleted();
+    expect(deleted).toBe(true);
 
-  //   try {
-  //     const user = await usersDb.insert(userLogin);
-  //     expect(user.username).toBe("test User Sleep");
-  //     const entry = await insert(sleepEntry);
-  //     expect(entry).toBeDefined();
-  //     done();
-  //   } catch (err) {
-  //     console.log(err);
-  //     done(err);
-  //   }
+    try {
+      const user = await usersDb.insert(userLogin);
+      expect(user.username).toBe("test User Sleep");
+      const entry = await insert(sleepEntry);
+      expect(entry).toBeDefined();
+      done();
+    } catch (err) {
+      console.log(err);
+      done(err);
+    }
 
-  //   try {
-  //     const entry = await findBy({ id: sleepObj.id });
-  //     expect(entry).toBeDefined();
-  //     done();
-  //   } catch (err) {
-  //     done(err);
-  //   }
-  // });
+    try {
+      const entries = await findBy({ id: 1 });
+      const entry = entries[0];
+      expect(entry).toBeDefined();
+      // @ts-ignore
+      expect(entry.sleep_start).toBe(sleepEntry.sleep_start);
+      // @ts-ignore
+      expect(entry.sleep_end).toBe(sleepEntry.sleep_end);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 
-  // // Test the update method
-  // it("should update a entry successfully", async done => {
-  //   // Ensure entries have been deleted properly
-  //   const deleted = await dbHasDeleted();
-  //   expect(deleted).toBe(true);
+  // Test the update method
+  it("should update a entry successfully", async done => {
+    // Ensure entries have been deleted properly
+    const deleted = await dbHasDeleted();
+    expect(deleted).toBe(true);
 
-  //   try {
-  //     // Create the sleep entry
-  //     const entry = await insert(sleepEntry)[0];
-  //     expect(entry).toBeDefined();
-  //     expect(entry.sleep_start).toBe(sleepEntry.sleep_start);
-  //     // Update the sleep entry
-  //     const param = entry.id;
-  //     const updatedEntry = await update(param, { sleep_end: 1608552000001 });
-  //     // @ts-ignore
-  //     expect(updatedEntry.sleep_end).toBe(1608552000001);
-  //     done();
-  //   } catch (err) {
-  //     done(err);
-  //   }
-  // });
+    try {
+      // Create the sleep entry
+      const user = await usersDb.insert(userLogin);
+      expect(user.username).toBe("test User Sleep");
+      const entries = await insert(sleepEntry);
+      const entry = entries[0];
+      expect(entry).toBeDefined();
+      // @ts-ignore
+      expect(entry.sleep_start).toBe(sleepEntry.sleep_start);
+      // Update the sleep entry
+      // @ts-ignore
+      const param = entry.id;
+      const updatedEntries = await update(param, { sleep_end: 1608552000001 });
+      const updatedEntry = updatedEntries[0];
+      // @ts-ignore
+      expect(updatedEntry.sleep_end).toBe(1608552000001);
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
+
+  // Test the update method
+  it("should delete a entry successfully", async done => {
+    // Ensure entries have been deleted properly
+    const deleted = await dbHasDeleted();
+    expect(deleted).toBe(true);
+
+    try {
+      // Create the sleep entry
+      const user = await usersDb.insert(userLogin);
+      expect(user.username).toBe("test User Sleep");
+      const entries = await insert(sleepEntry);
+      const entry = entries[0];
+      expect(entry).toBeDefined();
+      // @ts-ignore
+      expect(entry.sleep_start).toBe(sleepEntry.sleep_start);
+      // Delete the sleep entry
+      // @ts-ignore
+      const param = entry.id;
+      await remove(param);
+      const deletedEntries = await find();
+      expect(deletedEntries).toHaveLength(0);
+      const deletedEntry = deletedEntries[0];
+      // @ts-ignore
+      expect(deletedEntry).toBeUndefined();
+      done();
+    } catch (err) {
+      done(err);
+    }
+  });
 });
