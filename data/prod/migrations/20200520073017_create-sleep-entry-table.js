@@ -2,9 +2,9 @@ exports.up = function (knex) {
   // prettier-ignore
   return knex.schema.createTable("sleep", tbl => {
     tbl.increments()
-    tbl.timestamp("sleep_start")
+    tbl.bigint("sleep_start")
       .notNullable()
-    tbl.timestamp("sleep_end")
+    tbl.bigint("sleep_end")
       .notNullable()
     tbl.float("sleep_goal")
       .notNullable()
