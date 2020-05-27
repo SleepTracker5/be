@@ -50,6 +50,7 @@ exports.seed = async function (knex) {
   for (let user_id of sleepUserIds.slice(0, 2)) {
     // I can only seed a couple of users
     let date = startDate;
+    console.log("Seeding:", user_id);
     createFakeSleep([date, Number(user_id), userData], fakeSleepRecords);
   }
 
