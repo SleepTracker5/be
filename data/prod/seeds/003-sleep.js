@@ -47,7 +47,7 @@ exports.seed = async function (knex) {
   const startDate = moment("2020-04-01 21:00", "YYYY-MM-DD hh:mm");
   const fakeSleepRecords = 30;
   const userData = [];
-  for (let user_id of sleepUserIds.slice(0, 2) {
+  for (let user_id of sleepUserIds.slice(0, 2)) {
     // I can only seed a couple of users
     let date = startDate;
     createFakeSleep([date, Number(user_id), userData], fakeSleepRecords);
