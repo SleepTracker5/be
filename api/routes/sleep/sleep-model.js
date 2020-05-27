@@ -6,17 +6,19 @@ module.exports = { find, findBy, insert, update, remove };
 function find(query) {
   // Timestamps run from 1900-01-01 to 9999-12-31
   let { start = -2208970800000, end = 253402232400000 } = query ? query : {};
-  return db("sleep")
-    .whereBetween("sleep_start", [start, end]);
+  return db("sleep as s")
+    .whereBetween("s.sleep_start", [start, end])
+    .orderBy("s.sleep_start")
 }
 
 // prettier-ignore
 function findBy(field, query) {
   // Timestamps run from 1900-01-01 to 9999-12-31
   let { start = -2208970800000, end = 253402232400000 } = query ? query : {};
-  return db("sleep")
+  return db("sleep as s")
     .where(field)
-    .whereBetween("sleep_start", [start, end]);
+    .whereBetween("s.sleep_start", [start, end])
+    .orderBy("s.sleep_start")
 }
 
 function insert(trace) {

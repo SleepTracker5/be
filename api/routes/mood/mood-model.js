@@ -8,25 +8,33 @@ function find() {
 
 // prettier-ignore
 function findBy(field) {
-  return db("mood")
-    .where(field);
+  return db("mood as m")
+    .select(["m.id", "m.mood_score", "m.order", "m.sleep_id", "s.user_id"])
+    .leftJoin("sleep as s", "s.id", "m.sleep_id")
+    .where(field)
+    .orderBy("sleep_id", "asc")
+    .orderBy("order", "asc")
 }
 
 function insert(trace) {
-  return db("mood")
+  return db("sleep")
     .insert(trace)
+    .returning("id")
     .then(async ids => {
-      const traces = [];
-      for (let id in ids) {
-        const trace = await findBy({ id });
-        traces.push(trace);
-      }
-      return traces.length > 1 ? traces : traces[0];
+      console.log("ids:", ids);
+      return ids;
+      // const traces = [];
+      // for (let id of ids) {
+      //   const trace = await findBy({ id });
+      //   trace && traces.push(trace[0]);
+      // }
+      // return traces;
     });
 }
 
 function update(id, changes) {
-  return db("mood")
+  delete changes.id;
+  return db("sleep")
     .where({ id })
     .update(changes)
     .then(async res => {
@@ -39,7 +47,7 @@ function update(id, changes) {
 
 // prettier-ignore
 function remove(id) {
-  return db("mood")
+  return db("sleep")
     .where({ id })
     .delete();
 }

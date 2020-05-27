@@ -28,6 +28,7 @@ router.get("/", async (req, res) => {
       sleepData = await findBy({ user_id }, req.query);
     }
     // Format the timestamps
+    console.log(sleepData);
     sleepData = sleepData.map(data => {
       // Deal with intergers as strings
       return {

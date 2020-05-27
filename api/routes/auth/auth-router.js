@@ -10,8 +10,10 @@ const {
 } = require("../../middleware/restricted-middleware");
 const userRoute = require("../users/users-router");
 const sleepRoute = require("../sleep/sleep-router");
+const moodRoute = require("../mood/mood-router");
 router.use("/users", restrictByRole(), userRoute);
 router.use("/sleep", restrict(), sleepRoute);
+router.use("/mood", restrict(), moodRoute);
 
 // Db helper fns
 const { findBy, insert } = require("../users/users-model");
