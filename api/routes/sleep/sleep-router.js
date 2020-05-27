@@ -3,14 +3,7 @@ const router = express.Router();
 const moment = require("moment");
 
 // Db helpers, utils
-const {
-  find,
-  findBy,
-  findAll,
-  insert,
-  update,
-  remove,
-} = require("./sleep-model");
+const { find, findBy, insert, update, remove } = require("./sleep-model");
 const { errDetail, validateTime } = require("../../utils/utils");
 
 // Constants
@@ -37,8 +30,6 @@ router.get("/", async (req, res) => {
     // Format the timestamps
     sleepData = sleepData.map(data => {
       // Deal with intergers as strings
-      console.log(typeof parseInt(data.sleep_start));
-      console.log(moment(parseInt(data.sleep_start)).format("x"));
       return {
         id: data.id,
         sleep_start: data.sleep_start,
@@ -54,19 +45,6 @@ router.get("/", async (req, res) => {
           (data.sleep_end - data.sleep_start) / millisecondsInOneHour,
       };
     });
-    res.status(200).json({
-      message: "Success",
-      validation: [],
-      data: sleepData,
-    });
-  } catch (err) {
-    errDetail(res, err);
-  }
-});
-
-router.get("/all", async (req, res) => {
-  try {
-    const sleepData = await findAll();
     res.status(200).json({
       message: "Success",
       validation: [],

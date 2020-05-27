@@ -1,6 +1,6 @@
 const db = require("../../../data/dbConfig");
 
-module.exports = { find, findBy, findAll, insert, update, remove };
+module.exports = { find, findBy, insert, update, remove };
 
 // prettier-ignore
 function find(query) {
@@ -8,11 +8,6 @@ function find(query) {
   let { start = -2208970800000, end = 253402232400000 } = query ? query : {};
   return db("sleep")
     .whereBetween("sleep_start", [start, end]);
-}
-
-// prettier-ignore
-function findAll() {
-  return db("sleep")
 }
 
 // prettier-ignore
