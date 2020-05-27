@@ -35,6 +35,7 @@ router.get("/", async (req, res) => {
         sleep_end: data.sleep_end,
         start_formatted: moment(data.sleep_start).format("MM/DD/YYYY HH:MM"),
         end_formatted: moment(data.sleep_end).format("MM/DD/YYYY HH:MM"),
+        sleep_goal: data.sleep_goal,
         sleep_hours:
           (data.sleep_end - data.sleep_start) / millisecondsInOneHour,
       };

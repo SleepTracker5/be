@@ -8,6 +8,8 @@ exports.up = function (knex) {
     tbl.integer("sleep_end")
       .unsigned()
       .notNullable()
+    tbl.real("sleep_goal")
+      .notNullable()
     tbl.integer("user_id")
       .unsigned()
       .notNullable()
