@@ -6,7 +6,7 @@ exports.up = function (knex) {
       .notNullable()
     tbl.timestamp("sleep_end")
       .notNullable()
-    tbl.real("sleep_goal")
+    tbl.float("sleep_goal")
       .notNullable()
     tbl.integer("user_id")
       .unsigned()
