@@ -26,7 +26,7 @@ function insert(trace) {
       const traces = [];
       for (let id of ids) {
         const trace = await findBy({ id });
-        traces.push(trace);
+        trace && traces.push(trace[0]);
       }
       return traces;
     });
