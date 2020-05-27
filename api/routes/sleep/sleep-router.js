@@ -37,14 +37,18 @@ router.get("/", async (req, res) => {
     // Format the timestamps
     sleepData = sleepData.map(data => {
       // Deal with intergers as strings
-      const unixStart = moment(data.sleep_start).format("x");
-      const unixEnd = moment(data.sleep_end).format("x");
+      console.log(typeof parseInt(data.sleep_start));
+      console.log(moment(parseInt(data.sleep_start)).format("x"));
       return {
         id: data.id,
         sleep_start: data.sleep_start,
         sleep_end: data.sleep_end,
-        start_formatted: moment(unixStart).format("MM/DD/YYYY HH:MM"),
-        end_formatted: moment(unixEnd).format("MM/DD/YYYY HH:MM"),
+        start_formatted: moment(parseInt(data.sleep_start)).format(
+          "MM/DD/YYYY HH:MM",
+        ),
+        end_formatted: moment(parseInt(data.sleep_end)).format(
+          "MM/DD/YYYY HH:MM",
+        ),
         sleep_goal: data.sleep_goal,
         sleep_hours:
           (data.sleep_end - data.sleep_start) / millisecondsInOneHour,
