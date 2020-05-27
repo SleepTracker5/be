@@ -24,7 +24,7 @@ function insert(trace) {
     .insert(trace)
     .then(async ids => {
       const traces = [];
-      for (let id in ids) {
+      for (let id of ids) {
         const trace = await findBy({ id });
         traces.push(trace);
       }

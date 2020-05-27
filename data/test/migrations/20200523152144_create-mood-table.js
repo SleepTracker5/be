@@ -1,18 +1,17 @@
 exports.up = function (knex) {
   // prettier-ignore
-  return knex.schema.createTable("sleep", tbl => {
+  return knex.schema.createTable("mood", tbl => {
     tbl.increments()
-    tbl.integer("sleep_start")
+    tbl.integer("mood_score")
       .unsigned()
       .notNullable()
-    tbl.integer("sleep_end")
+    tbl.integer("order")
       .unsigned()
-      .notNullable()
-    tbl.integer("user_id")
+    tbl.integer("sleep_id")
       .unsigned()
       .notNullable()
       .references("id")
-      .inTable("users")
+      .inTable("sleep")
       .onUpdate("CASCADE")
       .onDelete("CASCADE")
   });
@@ -20,5 +19,5 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   // prettier-ignore
-  return knex.schema.dropTableIfExists("sleep");
+  return knex.schema.dropTableIfExists("mood");
 };

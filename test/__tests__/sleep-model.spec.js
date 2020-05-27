@@ -87,7 +87,7 @@ describe("the entries model", () => {
       expect(user.username).toBe("test User Sleep");
       expect(user.role).toBe(1);
       // Add a sleep entry
-      let entries = await find({});
+      let entries = await find();
       expect(entries).toHaveLength(0);
       await insert(sleepEntry);
       await insert(sleepEntry);

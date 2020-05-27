@@ -3,10 +3,10 @@ module.exports = {
     client: "pg",
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: "./data/migrations",
+      directory: "./data/prod/migrations",
     },
     seeds: {
-      directory: "./data/seeds",
+      directory: "./data/prod/seeds",
     },
   },
   development: {
@@ -16,10 +16,10 @@ module.exports = {
       filename: "./data/sleep-tracker.db3",
     },
     migrations: {
-      directory: "./data/migrations",
+      directory: "./data/test/migrations",
     },
     seeds: {
-      directory: "./data/seeds",
+      directory: "./data/test/seeds",
     },
     // needed when using foreign keys
     pool: {
@@ -36,10 +36,10 @@ module.exports = {
       filename: "./data/sleep-tracker-test.db3",
     },
     migrations: {
-      directory: "./data/migrations",
+      directory: "./data/test/migrations",
     },
     seeds: {
-      directory: "./data/seeds",
+      directory: "./data/test/seeds",
     },
     // needed when using foreign keys
     pool: {
