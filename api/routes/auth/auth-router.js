@@ -4,9 +4,14 @@ const jwt = require("jsonwebtoken");
 const router = express.Router({ mergeParams: true });
 
 // Subroutes
-const restricted = require("../../middleware/restricted-middleware");
+const {
+  restrict,
+  restrictByRole,
+} = require("../../middleware/restricted-middleware");
 const userRoute = require("../users/users-router");
-router.use("/users", restricted(), userRoute);
+const sleepRoute = require("../sleep/sleep-router");
+router.use("/users", restrictByRole(), userRoute);
+router.use("/sleep", restrict(), sleepRoute);
 
 // Db helper fns
 const { findBy, insert } = require("../users/users-model");
@@ -80,7 +85,7 @@ router.post("/register", validateUniqueUsername, async (req, res) => {
 /**
  * @api {post} /api/login Login a User
  * @apiGroup Auth
- * @apiDescription Registers a New User
+ * @apiDescription Logs In a User
  * @apiParam {String} username The username for the new user
  * @apiParam {String} password The password for the new user
  * @apiParamExample {json} Request Example:

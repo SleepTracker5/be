@@ -3,23 +3,23 @@ module.exports = {
     client: "pg",
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: "./data/migrations",
+      directory: "./data/prod/migrations",
     },
     seeds: {
-      directory: "./data/seeds",
+      directory: "./data/prod/seeds",
     },
   },
   development: {
     client: "sqlite3",
     useNullAsDefault: true,
     connection: {
-      filename: "./data/users.db3",
+      filename: "./data/sleep-tracker.db3",
     },
     migrations: {
-      directory: "./data/migrations",
+      directory: "./data/test/migrations",
     },
     seeds: {
-      directory: "./data/seeds",
+      directory: "./data/test/seeds",
     },
     // needed when using foreign keys
     pool: {
@@ -33,13 +33,13 @@ module.exports = {
     client: "sqlite3",
     useNullAsDefault: true,
     connection: {
-      filename: "./data/users-test.db3",
+      filename: "./data/sleep-tracker-test.db3",
     },
     migrations: {
-      directory: "./data/migrations",
+      directory: "./data/test/migrations",
     },
     seeds: {
-      directory: "./data/seeds",
+      directory: "./data/test/seeds",
     },
     // needed when using foreign keys
     pool: {

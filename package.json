@@ -8,7 +8,7 @@
     "node": "10.16.3"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=testing jest",
+    "test": "cross-env NODE_ENV=testing jest --runInBand --testTimeout=10000",
     "test-watch": "cross-env NODE_ENV=testing jest --watch",
     "apidocs": "apidoc -i api/ -o apidoc/",
     "lint-staged": "lint-staged",
@@ -26,6 +26,9 @@
     "testEnvironment": "node",
     "setupFiles": [
       "dotenv/config"
+    ],
+    "setupFilesAfterEnv": [
+      "./test/teardown.js"
     ]
   },
   "repository": {
@@ -71,6 +74,9 @@
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.15",
+    "moment": "^2.26.0",
+    "moment-random": "^1.0.5",
+    "moment-timezone": "^0.5.31",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
     "pg": "^8.2.1",

@@ -1,6 +1,6 @@
-const server = require("../api/server");
+const server = require("../../api/server");
 const request = require("supertest");
-const db = require("../data/dbConfig");
+const db = require("../../data/dbConfig");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -23,7 +23,7 @@ const verifyProperties = (obj, props) => {
 };
 
 // Db helpers
-const { find } = require("../api/routes/users/users-model");
+const { find } = require("../../api/routes/users/users-model");
 
 // Test user credentials
 const defaultPW = "123456";
@@ -191,15 +191,5 @@ describe("the auth route", () => {
         done(err);
       }
     });
-  });
-
-  afterAll(async done => {
-    try {
-      await db.destroy();
-      done();
-    } catch (err) {
-      console.log("Unable to close the database connection", err);
-      done(err);
-    }
   });
 });
