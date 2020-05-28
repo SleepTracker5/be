@@ -24,13 +24,15 @@ function findBy(field, query) {
 function insert(trace) {
   return db("sleep")
     .insert(trace)
-    .then(async ids => {
-      const traces = [];
-      for (let id of ids) {
-        const trace = await findBy({ id });
-        trace && traces.push(trace[0]);
-      }
-      return traces;
+    .returning("id")
+    .then(ids => {
+      console.log(ids);
+      // const traces = [];
+      // for (let id of ids) {
+      //   const trace = await findBy({ id });
+      //   trace && traces.push(trace[0]);
+      // }
+      // return traces;
     });
 }
 
