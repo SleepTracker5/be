@@ -25,13 +25,9 @@ function insert(trace) {
   return db("sleep")
     .insert(trace)
     .returning("id")
-    .then(async ids => {
-      const traces = [];
-      for (let id of ids) {
-        const trace = await findBy({ id });
-        trace && traces.push(trace[0]);
-      }
-      return traces;
+    .then(async id => {
+      const trace = await findBy({ id });
+      return trace;
     });
 }
 
@@ -41,13 +37,9 @@ function update(id, changes) {
     .where({ id })
     .update(changes)
     .returning("id")
-    .then(async ids => {
-      const traces = [];
-      for (let id of ids) {
-        const trace = await findBy({ id });
-        trace && traces.push(trace[0]);
-      }
-      return traces;
+    .then(async id => {
+      const trace = await findBy({ id });
+      return trace;
     });
 }
 
