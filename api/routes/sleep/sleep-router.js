@@ -30,7 +30,6 @@ router.get("/", async (req, res) => {
     // Format the timestamps
     console.log(sleepData);
     sleepData = sleepData.map(data => {
-      // Deal with intergers as strings
       return {
         id: data.id,
         sleep_start: data.sleep_start,
@@ -124,7 +123,7 @@ async function validateSleepId(req, res, next) {
   try {
     const id = Number(req.params.id);
     const sleep = await findBy({ id });
-    if (!sleep) {
+    if (!sleep.length) {
       return res.status(404).json({
         message: "Not Found",
         validation: ["Sleep id doesn't exist"],
