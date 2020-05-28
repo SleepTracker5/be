@@ -126,7 +126,7 @@ async function validateSleepId(req, res, next) {
     if (!sleep.length) {
       return res.status(404).json({
         message: "Not Found",
-        validation: ["Sleep id doesn't exist"],
+        validation: ["Sleep id could not be found for this user"],
         data: {},
       });
     }
