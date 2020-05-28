@@ -41,12 +41,13 @@ function update(id, changes) {
     .where({ id })
     .update(changes)
     .returning("id")
-    .then(async res => {
-      console.log("update:", res);
-      //   if (res === 1) {
-      //     const trace = await findBy({ id }); // the param
-      //     return trace;
-      //   }
+    .then(async ids => {
+      const traces = [];
+      for (let id of ids) {
+        const trace = await findBy({ id });
+        trace && traces.push(trace[0]);
+      }
+      return traces;
     });
 }
 
