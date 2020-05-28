@@ -39,11 +39,13 @@ function update(id, changes) {
   return db("sleep")
     .where({ id })
     .update(changes)
+    .returning("id")
     .then(async res => {
-      if (res === 1) {
-        const trace = await findBy({ id }); // the param
-        return trace;
-      }
+      console.log("update:", res);
+      //   if (res === 1) {
+      //     const trace = await findBy({ id }); // the param
+      //     return trace;
+      //   }
     });
 }
 
