@@ -25,14 +25,13 @@ function insert(trace) {
   return db("sleep")
     .insert(trace)
     .returning("id")
-    .then(ids => {
-      console.log(ids);
-      // const traces = [];
-      // for (let id of ids) {
-      //   const trace = await findBy({ id });
-      //   trace && traces.push(trace[0]);
-      // }
-      // return traces;
+    .then(async ids => {
+      const traces = [];
+      for (let id of ids) {
+        const trace = await findBy({ id });
+        trace && traces.push(trace[0]);
+      }
+      return traces;
     });
 }
 
