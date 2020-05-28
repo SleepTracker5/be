@@ -55,5 +55,9 @@ function update(id, changes) {
 function remove(id) {
   return db("sleep")
     .where({ id })
-    .delete();
+    .delete()
+    .returning("*")
+    .then(res => {
+      return res
+    })
 }
