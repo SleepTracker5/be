@@ -1,4 +1,5 @@
 const db = require("../../../data/dbConfig");
+const { isIterable } = require("../../../api/utils/utils");
 
 module.exports = { find, findBy, insert, update, remove };
 
@@ -25,9 +26,17 @@ function insert(trace) {
   return db("sleep")
     .insert(trace)
     .returning("id")
-    .then(async id => {
-      const trace = await findBy({ id });
-      return trace;
+    .then(async res => {
+      if (isIterable(res)) {
+        const traces = [];
+        for (let id of res) {
+          const trace = await findBy({ id });
+          trace && traces.push(trace[0]);
+        }
+        return traces;
+      } else {
+        return await findBy({ id: res });
+      }
     });
 }
 
@@ -37,9 +46,17 @@ function update(id, changes) {
     .where({ id })
     .update(changes)
     .returning("id")
-    .then(async id => {
-      const trace = await findBy({ id });
-      return trace;
+    .then(async res => {
+      if (isIterable(res)) {
+        const traces = [];
+        for (let id of res) {
+          const trace = await findBy({ id });
+          trace && traces.push(trace[0]);
+        }
+        return traces;
+      } else {
+        return await findBy({ id: res });
+      }
     });
 }
 
