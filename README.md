@@ -349,14 +349,65 @@ HTTP/1.1 204: No Content
 }
 ```
 
+## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
+
+[Back to top](#top)
+
+<p>Get Sleep By Id</p>
+
+```
+GET /api/sleep/:id
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                               |
+| ----- | ------- | --------------------------------------------------------- |
+| sleep | `Array` | <p>An array with an object with the sleep information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+   "message": "Success",
+   "validation": [],
+   "data": [
+     {
+         "id": 4,
+         "sleep_start": 1586048400000,
+         "sleep_end": 1586073600000,
+         "sleep_goal": 9,
+         "user_id": 3
+     }
+   ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
 ## <a name='Get-All-Sleep'></a> Get All Sleep
 
 [Back to top](#top)
 
-<p>Get All Sleep</p>
+<p>Get All Sleep, with optional query string to request data within a date range</p>
 
 ```
-GET /api/sleep
+GET /api/sleep?start=&#39;dateHere&#39;&amp;end=&#39;dateHere&#39;
 ```
 
 ### Success response
@@ -414,57 +465,6 @@ HTTP/1.1 200: OK
 }
 ```
 
-## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
-
-[Back to top](#top)
-
-<p>Get Sleep By Id</p>
-
-```
-GET /api/sleep/:id
-```
-
-### Success response
-
-#### Success response - `Success 200`
-
-| Name  | Type    | Description                                               |
-| ----- | ------- | --------------------------------------------------------- |
-| sleep | `Array` | <p>An array with an object with the sleep information</p> |
-
-### Success response example
-
-#### Success response example - `Success Response:`
-
-```json
-HTTP/1.1 200: OK
-{
-   "message": "Success",
-   "validation": [],
-   "data": [
-     {
-         "id": 4,
-         "sleep_start": 1586048400000,
-         "sleep_end": 1586073600000,
-         "sleep_goal": 9,
-         "user_id": 3
-     }
-   ]
-}
-```
-
-### Error response example
-
-#### Error response example - `Invalid Credentials:`
-
-```json
-{
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
-}
-```
-
 ## <a name='Insert-a-sleep-record'></a> Insert a sleep record
 
 [Back to top](#top)
@@ -472,7 +472,7 @@ HTTP/1.1 200: OK
 <p>Add a sleep record</p>
 
 ```
-POST /api/sleep/:id
+POST /api/sleep
 ```
 
 ### Parameters - `Parameter`
@@ -492,13 +492,13 @@ POST /api/sleep/:id
 
 ```json
 {
-	"sleep_start": 1588039200000,
- "sleep_end": 1588068000000,
- "sleep_goal: 6",
- "user_id": 3,
-	"mood_waking": 4,
-	"mood_day": 3,
-	"mood_bedtime": 2
+  "sleep_start": 1588039200000,
+  "sleep_end": 1588068000000,
+  "sleep_goal": 6,
+  "user_id": 3,
+  "mood_waking": 4,
+  "mood_day": 3,
+  "mood_bedtime": 2
 }
 ```
 
