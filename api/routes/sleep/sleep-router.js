@@ -214,8 +214,9 @@ router.post("/", async (req, res) => {
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
     console.log("sleepId:", sleepId);
     await insertMoodData(sleepId, moodData);
-    const moodDataInserted = await moodDb.findBySleepId(sleepData.id);
-    console.log("Fetching mood data:", moodDataInserted);
+    console.log("Fetching mood data...");
+    const moodDataInserted = await moodDb.findBySleepId(sleepId);
+    console.log("Fetched mood data:", moodDataInserted);
     // combine the sleep and mood data into a unified shape
     const newSleep = await addMoodData(sleepInserted, moodDataInserted);
     res.status(200).json({
@@ -291,7 +292,7 @@ router.put("/:id", validateSleepId, async (req, res) => {
     // @ts-ignore
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
     const moods = await moodDb.findBySleepId(sleepId);
-    updateMoodData(sleepId, moods, moodData);
+    await updateMoodData(sleepId, moods, moodData);
     // combine the data together into a unified request shape
     const sleepToMerge = isIterable(sleep) ? sleep[0] : sleep;
     const moodToMerge = await moodDb.findBySleepId(sleepToMerge.id);
