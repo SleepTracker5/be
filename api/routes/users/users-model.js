@@ -1,4 +1,5 @@
 const db = require("../../../data/dbConfig");
+const { isIterable } = require("../../../api/utils/utils");
 
 // Utils
 const { sanitizeUser } = require("../../utils/utils");
@@ -23,9 +24,19 @@ function findBy(field) {
 function insert(user) {
   return db("users")
     .insert(user)
-    .then(async ids => {
-      const user = await findBy({ id: ids[0] });
-      return sanitizeUser(user);
+    .returning("id")
+    .then(async res => {
+      if (isIterable(res)) {
+        const users = [];
+        for (let id of res) {
+          const user = await findBy({ id });
+          user && users.push(sanitizeUser(user));
+        }
+        return users[0];
+      } else {
+        const user = await findBy({ id: res });
+        return sanitizeUser(user);
+      }
     });
 }
 

@@ -117,7 +117,7 @@ router.get("/:id", validateUserId, async (req, res) => {
  * @apiParam {Object} property Any property on the user record
  * @apiParamExample {json} Request Example:
  * {
- *  "role": 2
+ *  "role": 2,
  *  "first_name": "Updated Test",
  * }
  * @apiSuccess {Object} user An object with the updated information
