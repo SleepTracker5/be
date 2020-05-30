@@ -4,14 +4,23 @@
 
 A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
 
+A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
+
 - [Deployment](#Deployment)
   - [Heroku](#Heroku)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
+- [Sleep](#Sleep)
+  - [Delete a sleep record by id](#Delete-a-sleep-record-by-id)
+  - [Get All Sleep](#Get-All-Sleep)
+  - [Get Sleep by Id](#Get-Sleep-by-Id)
+  - [Insert a sleep record](#Insert-a-sleep-record)
+  - [Update a sleep record by id](#Update-a-sleep-record-by-id)
 - [Users](#Users)
   - [Get All Users](#Get-All-Users)
   - [Get a User by Id](#Get-a-User-by-Id)
+  - [Update a User by Id](#Update-a-User-by-Id)
 
 ---
 
@@ -66,6 +75,8 @@ export const axiosWithAuth = () => {
   return instance;
 };
 ```
+
+---
 
 # <a name='Auth'></a> Auth
 
@@ -228,6 +239,348 @@ HTTP/1.1 400: Bad Request
 }
 ```
 
+# <a name='Sleep'></a> Sleep
+
+## <a name='Delete-a-sleep-record-by-id'></a> Delete a sleep record by id
+
+[Back to top](#top)
+
+<p>Delete a sleep record by id</p>
+
+```
+DELETE /api/sleep/:id
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name | Type     | Description                                                   |
+| ---- | -------- | ------------------------------------------------------------- |
+| Just | `Object` | <p>the standard shape with a success message is sent back</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 204: No Content
+{
+  "message": "The sleep entry with id 1 has been successfully deleted",
+  "validation": [],
+  "data": {}
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+#### Error response example - `Server Error (e.g. empty update sent):`
+
+```json
+{
+  "message": "There was a problem completing the required operation",
+  "validation": [],
+  "data": {}
+}
+```
+
+## <a name='Get-All-Sleep'></a> Get All Sleep
+
+[Back to top](#top)
+
+<p>Get All Sleep</p>
+
+```
+GET /api/sleep
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                           |
+| ----- | ------- | ----------------------------------------------------- |
+| sleep | `Array` | <p>An array of objects with the sleep information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+  "message": "Success",
+  "validation": [],
+  "data": [
+        {
+           "id": 1,
+           "sleep_start": 1585800000000,
+           "sleep_end": 1585843200000,
+           "sleep_goal": 6,
+           "user_id": 3
+        },
+        {
+           "id": 2,
+           "sleep_start": 1585886400000,
+           "sleep_end": 1585940400000,
+           "sleep_goal": 11,
+           "user_id": 3
+        },
+        {
+           "id": 3,
+           "sleep_start": 1586048400000,
+           "sleep_end": 1586073600000,
+           "sleep_goal": 9,
+           "user_id": 3
+        },
+   ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
+
+[Back to top](#top)
+
+<p>Get Sleep By Id</p>
+
+```
+GET /api/sleep/:id
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                               |
+| ----- | ------- | --------------------------------------------------------- |
+| sleep | `Array` | <p>An array with an object with the sleep information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+   "message": "Success",
+   "validation": [],
+   "data": [
+     {
+         "id": 4,
+         "sleep_start": 1586048400000,
+         "sleep_end": 1586073600000,
+         "sleep_goal": 9,
+         "user_id": 3
+     }
+   ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+## <a name='Insert-a-sleep-record'></a> Insert a sleep record
+
+[Back to top](#top)
+
+<p>Add a sleep record</p>
+
+```
+POST /api/sleep/:id
+```
+
+### Parameters - `Parameter`
+
+| Name         | Type      | Description                                       |
+| ------------ | --------- | ------------------------------------------------- |
+| sleep_start  | `Integer` | <p>The start time for the sleep entry</p>         |
+| sleep_end    | `Integer` | <p>The start time for the sleep entry</p>         |
+| user_id      | `Integer` | <p>The user id of the person who slept</p>        |
+| mood_waking  | `Integer` | <p>The user's mood score on waking (1-4)</p>      |
+| mood_day     | `Integer` | <p>The user's mood score during the day (1-4)</p> |
+| mood_bedtime | `Integer` | <p>The user's mood score at bedtime (1-4)</p>     |
+
+### Parameters examples
+
+`json` - Request Example:
+
+```json
+{
+	"sleep_start": 1588039200000,
+	"sleep_end": 1588068000000,
+ "sleep_goal: 6"
+	"user_id": 3,
+	"mood_waking": 4,
+	"mood_day": 3,
+	"mood_bedtime": 2
+}
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                          |
+| ----- | ------- | ---------------------------------------------------- |
+| sleep | `Array` | <p>An array with the object with the information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 201: Created
+{
+  "message": "The sleep entry has been successfully added",
+  "validation": [],
+  "data": [
+      {
+          "id": 1,
+          "sleep_start": 1588039200000,
+          "sleep_end": 1588068000000,
+          "sleep_goal": 6,
+          "user_id": 3,
+          "mood_waking": 4,
+	         "mood_day": 3,
+	         "mood_bedtime": 2
+      }
+  ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+#### Error response example - `Server Error (e.g. empty json sent):`
+
+```json
+{
+  "message": "There was a problem completing the required operation",
+  "validation": [],
+  "data": {}
+}
+```
+
+## <a name='Update-a-sleep-record-by-id'></a> Update a sleep record by id
+
+[Back to top](#top)
+
+<p>Update a sleep record by id</p>
+
+```
+PUT /api/sleep/:id
+```
+
+### Parameters - `Parameter`
+
+| Name     | Type     | Description                             |
+| -------- | -------- | --------------------------------------- |
+| property | `Object` | <p>Any property on the sleep record</p> |
+
+### Parameters examples
+
+`json` - Request Example:
+
+```json
+{
+  "sleep_end": 1588068000000
+}
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                                  |
+| ----- | ------- | ------------------------------------------------------------ |
+| sleep | `Array` | <p>An array with the object with the updated information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+  "message": "The sleep entry has been successfully updated",
+  "validation": [],
+  "data": [
+      {
+          "id": 1,
+          "sleep_start": 1588039200000,
+          "sleep_end": 1588068000000,
+          "sleep_goal": 6,
+          "user_id": 3,
+          "mood_waking": 4,
+	         "mood_day": 3,
+	         "mood_bedtime": 2
+      }
+  ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+#### Error response example - `Server Error (e.g. empty update sent):`
+
+```json
+{
+  "message": "There was a problem completing the required operation",
+  "validation": [],
+  "data": {}
+}
+```
+
 # <a name='Users'></a> Users
 
 ## <a name='Get-All-Users'></a> Get All Users
@@ -343,6 +696,83 @@ HTTP/1.1 200: OK
 ```json
 {
   "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+## <a name='Update-a-User-by-Id'></a> Update a User by Id
+
+[Back to top](#top)
+
+<p>Update a User by Id</p>
+
+```
+PUT /api/users/:id
+```
+
+### Parameters - `Parameter`
+
+| Name     | Type     | Description                            |
+| -------- | -------- | -------------------------------------- |
+| property | `Object` | <p>Any property on the user record</p> |
+
+### Parameters examples
+
+`json` - Request Example:
+
+```json
+{
+ "role": 2
+ "first_name": "Updated Test",
+}
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name | Type     | Description                                   |
+| ---- | -------- | --------------------------------------------- |
+| user | `Object` | <p>An object with the updated information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+  "message": "Success",
+  "validation": [],
+  "data": {
+           "id": 1,
+           "username": "test1",
+           "role": 2,
+           "first_name": "Updated Test",
+           "last_name": "User 1",
+           "email": "test@testing.com"
+   }
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+#### Error response example - `Server Error (e.g. empty update sent):`
+
+```json
+{
+  "message": "There was a problem completing the required operation",
   "validation": [],
   "data": {}
 }

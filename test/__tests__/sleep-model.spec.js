@@ -89,9 +89,11 @@ describe("the entries model", () => {
 
     try {
       // Add a user (for foreign key support)
-      const users = await usersDb.find();
+      let users = await usersDb.find();
       expect(users).toHaveLength(0);
-      const user = await usersDb.insert(userLogin);
+      await usersDb.insert(userLogin);
+      users = await usersDb.find();
+      const user = await users.find(user => user.id === 1);
       expect(user.username).toBe("test User Sleep");
       expect(user.role).toBe(1);
       // Add a sleep entry
@@ -150,8 +152,9 @@ describe("the entries model", () => {
       // Create the sleep entry
       const user = await usersDb.insert(userLogin);
       expect(user.username).toBe("test User Sleep");
-      const entries = await insert(sleepEntry);
-      const entry = entries[0];
+      await insert(sleepEntry);
+      const entries = await find();
+      const entry = entries.find(entry => entry.id === 1);
       expect(entry).toBeDefined();
       // @ts-ignore
       expect(entry.sleep_start).toBe(sleepEntry.sleep_start);
@@ -178,8 +181,9 @@ describe("the entries model", () => {
       // Create the sleep entry
       const user = await usersDb.insert(userLogin);
       expect(user.username).toBe("test User Sleep");
-      const entries = await insert(sleepEntry);
-      const entry = entries[0];
+      await insert(sleepEntry);
+      const entries = await find();
+      const entry = entries.find(entry => entry.id === 1);
       expect(entry).toBeDefined();
       // @ts-ignore
       expect(entry.sleep_start).toBe(sleepEntry.sleep_start);
