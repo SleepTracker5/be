@@ -213,7 +213,8 @@ router.post("/", async (req, res) => {
     // @ts-ignore
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
     console.log("sleepId:", sleepId);
-    await insertMoodData(sleepId, moodData);
+    const inserted = await insertMoodData(sleepId, moodData);
+    console.log("Inserted mood data array:", inserted);
     console.log("Fetching mood data...");
     const moodDataInserted = await moodDb.findBySleepId(Number(sleepId));
     console.log("Fetched mood data:", moodDataInserted);
@@ -429,7 +430,7 @@ async function insertMoodData(sleepId, moodData) {
     inserted.push(mood);
   });
   console.log("All inserted moods:", inserted);
-  return inserted;
+  return Promise.all(inserted);
 }
 
 /**
