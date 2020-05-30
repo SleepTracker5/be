@@ -369,6 +369,7 @@ async function validateSleepId(req, res, next) {
 async function addMoodData(sleepData) {
   // Fetch mood sleepData
   const mood = await moodDb.findBySleepId(sleepData.id);
+  console.log("sleepData.id:", sleepData.id);
   console.log("Mood:", mood);
   const obj = {
     id: sleepData.id,
