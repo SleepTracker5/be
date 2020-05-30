@@ -416,7 +416,8 @@ async function insertMoodData(sleepId, moodData) {
   console.log("IMD args:", sleepId, moodData);
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   const inserted = [];
-  Object.keys(moodData).map(async key => {
+  const keys = Object.keys(moodData);
+  for (const key of keys) {
     console.log("Using key for insertion:", key);
     const moodDataObj = {
       mood_score: moodData[key],
@@ -428,7 +429,7 @@ async function insertMoodData(sleepId, moodData) {
     const mood = await moodDb.insert(moodDataObj);
     console.log("Inserted:", mood);
     inserted.push(mood);
-  });
+  }
   console.log("All inserted moods:", inserted);
   return Promise.all(inserted);
 }
