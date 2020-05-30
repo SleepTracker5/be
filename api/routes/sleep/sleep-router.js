@@ -204,6 +204,7 @@ router.post("/", async (req, res) => {
     console.log("sleep added:", sleep);
     // insert the mood data one by one
     const moodData = { mood_waking, mood_day, mood_bedtime };
+    // @ts-ignore
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
     insertMoodData(sleepId, moodData);
     // combine the sleep and mood data into a unified shape

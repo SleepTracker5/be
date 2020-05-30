@@ -55,7 +55,7 @@ function update(id, changes) {
         }
         return traces;
       } else {
-        return await findBy({ id: res });
+        return await findBy({ id });
       }
     });
 }
