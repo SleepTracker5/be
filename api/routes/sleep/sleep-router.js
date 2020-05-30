@@ -412,7 +412,8 @@ function insertMoodData(sleepId, moodData) {
       sleep_id: sleepId,
     };
     console.log("Inserting:", moodDataObj);
-    await moodDb.insert(moodDataObj);
+    const mood = await moodDb.insert(moodDataObj);
+    console.log(mood);
   });
 }
 
