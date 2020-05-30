@@ -215,7 +215,7 @@ router.post("/", async (req, res) => {
     console.log("sleepId:", sleepId);
     await insertMoodData(sleepId, moodData);
     console.log("Fetching mood data...");
-    const moodDataInserted = await moodDb.findBySleepId(sleepId);
+    const moodDataInserted = await moodDb.findBySleepId(Number(sleepId));
     console.log("Fetched mood data:", moodDataInserted);
     // combine the sleep and mood data into a unified shape
     const newSleep = await addMoodData(sleepInserted, moodDataInserted);
@@ -425,9 +425,10 @@ async function insertMoodData(sleepId, moodData) {
     };
     console.log("Inserting:", moodDataObj);
     const mood = await moodDb.insert(moodDataObj);
+    console.log("Inserted:", mood);
     inserted.push(mood);
-    console.log("Mood inserted:", mood);
   });
+  console.log("All inserted moods:", inserted);
   return inserted;
 }
 
