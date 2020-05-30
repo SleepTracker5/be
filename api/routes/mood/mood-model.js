@@ -26,16 +26,13 @@ function insert(mood) {
     .insert(mood)
     .returning("id")
     .then(async res => {
+      let mood;
       if (isIterable(res)) {
-        const moods = [];
-        for (let id of res) {
-          const mood = await findBy({ id });
-          mood && moods.push(mood[0]);
-        }
-        return moods;
+        mood = await findBy({ id: res[0] });
       } else {
-        return await findBy({ id: res });
+        mood = findBy({ id: res });
       }
+      return mood;
     });
 }
 
