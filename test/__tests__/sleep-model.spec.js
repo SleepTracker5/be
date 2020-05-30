@@ -104,6 +104,7 @@ describe("the entries model", () => {
       entries = await find();
       expect(entries).not.toHaveLength(0);
       expect(entries).toHaveLength(2);
+      console.log(entries);
       done();
     } catch (err) {
       console.log(err);

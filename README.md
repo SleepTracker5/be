@@ -407,7 +407,7 @@ HTTP/1.1 200: OK
 <p>Get All Sleep, with optional query string to request data within a date range</p>
 
 ```
-GET /api/sleep?start=&#39;dateHere&#39;&amp;end=&#39;dateHere&#39;
+GET /api/sleep?start='startDateHere'&end='endDateHere';
 ```
 
 ### Success response
