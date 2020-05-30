@@ -71,7 +71,9 @@ router.get("/", async (req, res) => {
     }
     // Format the data
     sleepDataArray = sleepDataArray.map(async sleepData => {
-      return addMoodData(sleepData);
+      const sleepToInsert = isIterable(sleepData) ? sleepData[0] : sleepData;
+      const moodData = await moodDb.findBySleepId(sleepToInsert.id);
+      return addMoodData(sleepToInsert, moodData);
     });
     const resolvedData = await Promise.all(sleepDataArray);
     res.status(200).json({
@@ -124,7 +126,9 @@ router.get("/:id", async (req, res) => {
       });
     }
     // combine the sleep and mood data into a unified shape
-    const newSleep = await addMoodData(isIterable(sleep) ? sleep[0] : sleep);
+    const sleepToInsert = isIterable(sleep) ? sleep[0] : sleep;
+    const moodData = await moodDb.findBySleepId(sleepToInsert.id);
+    const newSleep = await addMoodData(sleepToInsert, moodData);
     res.status(200).json({
       message: "Success",
       validation: [],
@@ -210,8 +214,10 @@ router.post("/", async (req, res) => {
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
     console.log("sleepId:", sleepId);
     await insertMoodData(sleepId, moodData);
+    const moodDataInserted = await moodDb.findBySleepId(sleepData.id);
+    console.log("Fetching mood data:", moodDataInserted);
     // combine the sleep and mood data into a unified shape
-    const newSleep = await addMoodData(sleepInserted);
+    const newSleep = await addMoodData(sleepInserted, moodDataInserted);
     res.status(200).json({
       message: "Success",
       validation: [],
@@ -287,9 +293,9 @@ router.put("/:id", validateSleepId, async (req, res) => {
     const moods = await moodDb.findBySleepId(sleepId);
     updateMoodData(sleepId, moods, moodData);
     // combine the data together into a unified request shape
-    const updatedSleep = await addMoodData(
-      isIterable(sleep) ? sleep[0] : sleep,
-    );
+    const sleepToMerge = isIterable(sleep) ? sleep[0] : sleep;
+    const moodToMerge = await moodDb.findBySleepId(sleepToMerge.id);
+    const updatedSleep = await addMoodData(sleepToMerge, moodToMerge);
     res.status(200).json({
       message: `The sleep entry has been successfully updated`,
       validation: [],
@@ -369,11 +375,14 @@ async function validateSleepId(req, res, next) {
  * @param {Object} sleepData An object containing the sleep data
  * @returns {Promise} A promise that resolves to an object with the added mood data
  */
-async function addMoodData(sleepData) {
+async function addMoodData(sleepData, moodData) {
   // Fetch mood sleepData
-  const mood = await moodDb.findBySleepId(sleepData.id);
   console.log("sleepData.id:", sleepData.id);
-  console.log("Mood:", mood);
+  console.log("Mood args:", moodData);
+  const mood_waking = moodData.find(obj => obj.order === 1);
+  const mood_day = moodData.find(obj => obj.order === 2);
+  const mood_bedtime = moodData.find(obj => obj.order === 3);
+  console.log(mood_waking, mood_day, mood_bedtime);
   const obj = {
     id: sleepData.id,
     sleep_start: sleepData.sleep_start,
@@ -389,9 +398,9 @@ async function addMoodData(sleepData) {
       (sleepData.sleep_end - sleepData.sleep_start) / millisecondsInOneHour,
     /* This allows for extensibility - we can have any many mood data points
        as we want this way, rather than restricting it to 3*/
-    mood_waking: mood.find(obj => obj.order === 1).mood_score,
-    mood_day: mood.find(obj => obj.order === 2).mood_score,
-    mood_bedtime: mood.find(obj => obj.order === 3).mood_score,
+    mood_waking: mood_waking && mood_waking.mood_score,
+    mood_day: mood_day && mood_day.mood_score,
+    mood_bedtime: mood_bedtime && mood_bedtime.mood_score,
   };
   return obj;
 }
