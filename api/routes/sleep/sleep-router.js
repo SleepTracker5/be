@@ -401,14 +401,17 @@ async function addMoodData(sleepData) {
  * @returns None
  */
 function insertMoodData(sleepId, moodData) {
+  console.log("IMD args:", sleepId, moodData);
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   Object.keys(moodData).map(async key => {
+    console.log("Using key for insertion:", key);
     const moodDataObj = {
       mood_score: moodData[key],
       order: moodEventOrder[key],
       // @ts-ignore
       sleep_id: sleepId,
     };
+    console.log("Inserting:", moodDataObj);
     await moodDb.insert(moodDataObj);
   });
 }
