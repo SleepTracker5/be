@@ -223,7 +223,7 @@ router.post("/", async (req, res) => {
  * @api {put} /api/sleep/:id Update a sleep record by id
  * @apiGroup Sleep
  * @apiDescription Update a sleep record by id
- * @apiParam {*} property Any property on the sleep record
+ * @apiParam {Object} property Any property on the sleep record
  * @apiParamExample {json} Request Example:
  * {
  *  "sleep_end": 1588068000000,
@@ -339,9 +339,9 @@ router.delete("/:id", validateSleepId, async (req, res) => {
 // Middleware
 /**
  * @function validateSleepId: Validate the the id exists before submitting req
- * @param {*} req: The request object sent to the API
- * @param {*} res: The response object sent from the API
- * @param {*} next: The express middleware function to move to the next middleware
+ * @param {Object} req: The request object sent to the API
+ * @param {Object} res: The response object sent from the API
+ * @param {Object} next: The express middleware function to move to the next middleware
  * @returns: none
  */
 async function validateSleepId(req, res, next) {
