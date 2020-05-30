@@ -206,18 +206,12 @@ router.post("/", async (req, res) => {
     const sleepData = { sleep_start, sleep_end, sleep_goal, user_id };
     const sleep = await insert(sleepData);
     const sleepInserted = isIterable(sleep) ? sleep[0] : sleep;
-    console.log("sleep added:", sleepInserted);
     // insert the mood data one by one
     const moodData = { mood_waking, mood_day, mood_bedtime };
-    console.log("moodData:", moodData);
     // @ts-ignore
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
-    console.log("sleepId:", sleepId);
-    const inserted = await insertMoodData(sleepId, moodData);
-    console.log("Inserted mood data array:", inserted);
-    console.log("Fetching mood data...");
+    await insertMoodData(sleepId, moodData);
     const moodDataInserted = await moodDb.findBySleepId(Number(sleepId));
-    console.log("Fetched mood data:", moodDataInserted);
     // combine the sleep and mood data into a unified shape
     const newSleep = await addMoodData(sleepInserted, moodDataInserted);
     res.status(200).json({
@@ -418,19 +412,15 @@ async function insertMoodData(sleepId, moodData) {
   const inserted = [];
   const keys = Object.keys(moodData);
   for (const key of keys) {
-    console.log("Using key for insertion:", key);
     const moodDataObj = {
       mood_score: moodData[key],
       order: moodEventOrder[key],
       // @ts-ignore
       sleep_id: sleepId,
     };
-    console.log("Inserting:", moodDataObj);
     const mood = await moodDb.insert(moodDataObj);
-    console.log("Inserted:", mood);
     inserted.push(mood);
   }
-  console.log("All inserted moods:", inserted);
   return Promise.all(inserted);
 }
 
@@ -444,7 +434,8 @@ async function insertMoodData(sleepId, moodData) {
 async function updateMoodData(sleepId, moods, moodData) {
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   const updated = [];
-  Object.keys(moodData).map(async key => {
+  const keys = Object.keys(moodData);
+  for (const key of keys) {
     const moodOrder = moodEventOrder[key];
     const moodId = moods.find(mood => mood.order === moodOrder).id;
     const moodDataObj = {
@@ -455,7 +446,8 @@ async function updateMoodData(sleepId, moods, moodData) {
     };
     const update = await moodDb.update(moodId, moodDataObj);
     updated.push(update);
-  });
+  }
+  return Promise.all(updated);
 }
 
 /**
