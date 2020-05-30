@@ -13,9 +13,9 @@ const millisecondsInOneHour = 1000 * 60 * 60;
 
 // Routes
 /**
- * @api {get} /api/sleep?start='dateHere'&end='dateHere' Get All Sleep
+ * @api {get} /api/sleep Get All Sleep
  * @apiGroup Sleep
- * @apiDescription Get All Sleep, with optional query string to request data within a date range
+ * @apiDescription Get All Sleep
  * @apiSuccess {Array} sleep An array of objects with the sleep information
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200: OK
@@ -113,7 +113,6 @@ router.get("/", async (req, res) => {
  *  "data": {}
  * }
  */
-
 router.get("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);
@@ -141,7 +140,7 @@ router.get("/:id", async (req, res) => {
 });
 
 /**
- * @api {post} /api/sleep Insert a sleep record
+ * @api {post} /api/sleep/:id Insert a sleep record
  * @apiGroup Sleep
  * @apiDescription Add a sleep record
  * @apiParam {Integer} sleep_start The start time for the sleep entry
@@ -152,13 +151,13 @@ router.get("/:id", async (req, res) => {
  * @apiParam {Integer} mood_bedtime The user's mood score at bedtime (1-4)
  * @apiParamExample {json} Request Example:
  * {
- *  "sleep_start": 1588039200000,
+ *	"sleep_start": 1588039200000,
  *  "sleep_end": 1588068000000,
- *  "sleep_goal": 6,
+ *  "sleep_goal: 6",
  *  "user_id": 3,
- *  "mood_waking": 4,
- *  "mood_day": 3,
- *  "mood_bedtime": 2
+ *	"mood_waking": 4,
+ *	"mood_day": 3,
+ *	"mood_bedtime": 2
  * }
  * @apiSuccess {Array} sleep An array with the object with the information
  * @apiSuccessExample {json} Success Response:
