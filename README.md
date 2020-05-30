@@ -1,16 +1,18 @@
 <a name="top"></a>
 
-# Sleep Tracker API Documentation v1.0.3
-
-A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
+# Sleep Tracker API Documentation v1.1.45
 
 A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
 
 - [Deployment](#Deployment)
   - [Heroku](#Heroku)
+- [Data Standardization](#Data-Standardization)
+  - [Response Shape](#Response-Shape)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
+- [Mood](#Mood)
+  - [Delete a mood record by id](#Delete-a-mood-record-by-id)
 - [Sleep](#Sleep)
   - [Delete a sleep record by id](#Delete-a-sleep-record-by-id)
   - [Get All Sleep](#Get-All-Sleep)
@@ -32,9 +34,9 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
 
-# <a name='Data Standarization'></a> Data Standardization
+# <a name='Data-Standarization'></a> Data Standardization
 
-## <a name='Response Shape'></a> Response Shape
+## <a name='Response-Shape'></a> Response Shape
 
 <p>The API responses conform to a standard shape comprised of the following properties:
 
@@ -75,8 +77,6 @@ export const axiosWithAuth = () => {
   return instance;
 };
 ```
-
----
 
 # <a name='Auth'></a> Auth
 
@@ -239,6 +239,61 @@ HTTP/1.1 400: Bad Request
 }
 ```
 
+# <a name='Mood'></a> Mood
+
+## <a name='Delete-a-mood-record-by-id'></a> Delete a mood record by id
+
+[Back to top](#top)
+
+<p>Delete a mood record by id</p>
+
+```
+DELETE /api/mood/:id
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name    | Type     | Description                                                   |
+| ------- | -------- | ------------------------------------------------------------- |
+| message | `Object` | <p>The standard shape with a success message is sent back</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 204: No Content
+{
+  "message": "The mood entry with id 1 has been successfully deleted",
+  "validation": [],
+  "data": {}
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+{
+  "message": "Invalid Credentials",
+  "validation": [],
+  "data": {}
+}
+```
+
+#### Error response example - `Server Error (e.g. empty update sent):`
+
+```json
+{
+  "message": "There was a problem completing the required operation",
+  "validation": [],
+  "data": {}
+}
+```
+
 # <a name='Sleep'></a> Sleep
 
 ## <a name='Delete-a-sleep-record-by-id'></a> Delete a sleep record by id
@@ -255,9 +310,9 @@ DELETE /api/sleep/:id
 
 #### Success response - `Success 200`
 
-| Name | Type     | Description                                                   |
-| ---- | -------- | ------------------------------------------------------------- |
-| Just | `Object` | <p>the standard shape with a success message is sent back</p> |
+| Name    | Type     | Description                                                   |
+| ------- | -------- | ------------------------------------------------------------- |
+| message | `Object` | <p>The standard shape with a success message is sent back</p> |
 
 ### Success response example
 
@@ -425,7 +480,7 @@ POST /api/sleep/:id
 | Name         | Type      | Description                                       |
 | ------------ | --------- | ------------------------------------------------- |
 | sleep_start  | `Integer` | <p>The start time for the sleep entry</p>         |
-| sleep_end    | `Integer` | <p>The start time for the sleep entry</p>         |
+| sleep_end    | `Integer` | <p>The end time for the sleep entry</p>           |
 | user_id      | `Integer` | <p>The user id of the person who slept</p>        |
 | mood_waking  | `Integer` | <p>The user's mood score on waking (1-4)</p>      |
 | mood_day     | `Integer` | <p>The user's mood score during the day (1-4)</p> |
@@ -438,9 +493,9 @@ POST /api/sleep/:id
 ```json
 {
 	"sleep_start": 1588039200000,
-	"sleep_end": 1588068000000,
- "sleep_goal: 6"
-	"user_id": 3,
+ "sleep_end": 1588068000000,
+ "sleep_goal: 6",
+ "user_id": 3,
 	"mood_waking": 4,
 	"mood_day": 3,
 	"mood_bedtime": 2
@@ -472,8 +527,8 @@ HTTP/1.1 201: Created
           "sleep_goal": 6,
           "user_id": 3,
           "mood_waking": 4,
-	         "mood_day": 3,
-	         "mood_bedtime": 2
+          "mood_day": 3,
+          "mood_bedtime": 2
       }
   ]
 }
@@ -552,8 +607,8 @@ HTTP/1.1 200: OK
           "sleep_goal": 6,
           "user_id": 3,
           "mood_waking": 4,
-	         "mood_day": 3,
-	         "mood_bedtime": 2
+          "mood_day": 3,
+          "mood_bedtime": 2
       }
   ]
 }
@@ -723,8 +778,8 @@ PUT /api/users/:id
 
 ```json
 {
- "role": 2
- "first_name": "Updated Test",
+  "role": 2,
+  "first_name": "Updated Test"
 }
 ```
 

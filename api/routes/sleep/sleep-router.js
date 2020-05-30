@@ -144,7 +144,7 @@ router.get("/:id", async (req, res) => {
  * @apiGroup Sleep
  * @apiDescription Add a sleep record
  * @apiParam {Integer} sleep_start The start time for the sleep entry
- * @apiParam {Integer} sleep_end The start time for the sleep entry
+ * @apiParam {Integer} sleep_end The end time for the sleep entry
  * @apiParam {Integer} user_id The user id of the person who slept
  * @apiParam {Integer} mood_waking The user's mood score on waking (1-4)
  * @apiParam {Integer} mood_day The user's mood score during the day (1-4)
@@ -152,9 +152,9 @@ router.get("/:id", async (req, res) => {
  * @apiParamExample {json} Request Example:
  * {
  *	"sleep_start": 1588039200000,
- *	"sleep_end": 1588068000000,
- *  "sleep_goal: 6"
- *	"user_id": 3,
+ *  "sleep_end": 1588068000000,
+ *  "sleep_goal: 6",
+ *  "user_id": 3,
  *	"mood_waking": 4,
  *	"mood_day": 3,
  *	"mood_bedtime": 2
@@ -173,8 +173,8 @@ router.get("/:id", async (req, res) => {
  *           "sleep_goal": 6,
  *           "user_id": 3,
  *           "mood_waking": 4,
- *	         "mood_day": 3,
- *	         "mood_bedtime": 2
+ *           "mood_day": 3,
+ *           "mood_bedtime": 2
  *       }
  *   ]
  * }
@@ -247,8 +247,8 @@ router.post("/", async (req, res) => {
  *           "sleep_goal": 6,
  *           "user_id": 3,
  *           "mood_waking": 4,
- *	         "mood_day": 3,
- *	         "mood_bedtime": 2
+ *           "mood_day": 3,
+ *           "mood_bedtime": 2
  *       }
  *   ]
  * }
@@ -310,7 +310,7 @@ router.put("/:id", validateSleepId, async (req, res) => {
  * @api {delete} /api/sleep/:id Delete a sleep record by id
  * @apiGroup Sleep
  * @apiDescription Delete a sleep record by id
- * @apiSuccess {Object} Just the standard shape with a success message is sent back
+ * @apiSuccess {Object} message The standard shape with a success message is sent back
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 204: No Content
  * {

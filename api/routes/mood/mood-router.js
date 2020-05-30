@@ -6,6 +6,31 @@ const { findBy, remove } = require("./mood-model");
 const { errDetail, isIterable } = require("../../utils/utils");
 
 // Routes
+/**
+ * @api {delete} /api/mood/:id Delete a mood record by id
+ * @apiGroup Mood
+ * @apiDescription Delete a mood record by id
+ * @apiSuccess {Object} message The standard shape with a success message is sent back
+ * @apiSuccessExample {json} Success Response:
+ * HTTP/1.1 204: No Content
+ * {
+ *   "message": "The mood entry with id 1 has been successfully deleted",
+ *   "validation": [],
+ *   "data": {}
+ * }
+ * @apiErrorExample {json} Invalid Credentials:
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ * @apiErrorExample {json} Server Error (e.g. empty update sent):
+ * {
+ *  "message": "There was a problem completing the required operation",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
 router.delete("/:id", validateMoodId, async (req, res) => {
   try {
     const id = req.params.id;
