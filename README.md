@@ -197,7 +197,7 @@ POST /api/register
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `Created 201`
 
 | Name | Type     | Description                                    |
 | ---- | -------- | ---------------------------------------------- |
@@ -308,7 +308,7 @@ DELETE /api/sleep/:id
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `No Content 204`
 
 | Name    | Type     | Description                                                   |
 | ------- | -------- | ------------------------------------------------------------- |
@@ -504,7 +504,7 @@ POST /api/sleep
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `Created 201`
 
 | Name  | Type    | Description                                          |
 | ----- | ------- | ---------------------------------------------------- |
