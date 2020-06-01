@@ -32,6 +32,12 @@ const userLogin = {
   role: 1,
 };
 
+const adminLogin = {
+  username: "testAdminUsers",
+  password: hash,
+  role: 2,
+};
+
 // Tests
 
 describe("the users model", () => {
@@ -72,9 +78,22 @@ describe("the users model", () => {
       let users = await find();
       expect(users).toHaveLength(0);
       await insert(userLogin);
+      await insert(adminLogin);
       users = await find(); // add a user
+      // After insertion, find both users
       expect(users).not.toHaveLength(0);
-      expect(users).toHaveLength(1);
+      expect(users).toHaveLength(2);
+      // Find the specific users expected
+      const userFound = users.find(
+        user => user.username === userLogin.username,
+      );
+      expect(userFound).toBeDefined();
+      expect(userFound.username).toBe(userLogin.username);
+      const adminFound = users.find(
+        user => user.username === adminLogin.username,
+      );
+      expect(adminFound).toBeDefined();
+      expect(adminFound.username).toBe(adminLogin.username);
       done();
     } catch (err) {
       console.log(err);
@@ -91,7 +110,7 @@ describe("the users model", () => {
     try {
       const user = await insert(userLogin);
       expect(user.username).toBe("testUserUsers");
-      expect(user.password).not.toBe(hash);
+      expect(user.password).not.toBe(hash); // sanitizeUser should get rid of this
       expect(user.role).toBe(1);
       done();
     } catch (err) {
@@ -144,7 +163,7 @@ describe("the users model", () => {
       const role = Number(userLogin.role + 1);
       const updatedUser = await update(param, { role });
       expect(updatedUser.role).toBe(role);
-      expect(updatedUser.password).not.toBeDefined();
+      expect(updatedUser.password).not.toBeDefined(); // sanitizeUser should get rid of this
       done();
     } catch (err) {
       done(err);

@@ -114,10 +114,10 @@ router.get("/:id", validateUserId, async (req, res) => {
  * @api {put} /api/users/:id Update a User by Id
  * @apiGroup Users
  * @apiDescription Update a User by Id
- * @apiParam {*} property Any property on the user record
+ * @apiParam {Object} property Any property on the user record
  * @apiParamExample {json} Request Example:
  * {
- *  "role": 2
+ *  "role": 2,
  *  "first_name": "Updated Test",
  * }
  * @apiSuccess {Object} user An object with the updated information
