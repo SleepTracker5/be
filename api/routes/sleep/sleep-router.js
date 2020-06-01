@@ -53,28 +53,46 @@ const millisecondsInOneHour = 1000 * 60 * 60;
  *   "message": "Success",
  *   "validation": [],
  *   "data": [
- *         {
- *            "id": 1,
- *            "sleep_start": 1585800000000,
- *            "sleep_end": 1585843200000,
- *            "sleep_goal": 6,
- *            "user_id": 3
+ *        {
+ *             "id": 1,
+ *             "user_id": 3,
+ *             "sleep_start": "1585782000000",
+ *             "sleep_end": "1585832400000",
+ *             "start_formatted": "04/01/2020 11:00 PM",
+ *             "end_formatted": "04/02/2020 1:00 PM",
+ *             "sleep_goal": 11,
+ *             "sleep_hours": 14,
+ *             "mood_waking": 4,
+ *             "mood_day": 1,
+ *             "mood_bedtime": 4
  *         },
  *         {
- *            "id": 2,
- *            "sleep_start": 1585886400000,
- *            "sleep_end": 1585940400000,
- *            "sleep_goal": 11,
- *            "user_id": 3
+ *             "id": 2,
+ *             "user_id": 3,
+ *             "sleep_start": "1585868400000",
+ *             "sleep_end": "1585915200000",
+ *             "start_formatted": "04/02/2020 11:00 PM",
+ *             "end_formatted": "04/03/2020 12:00 PM",
+ *             "sleep_goal": 8,
+ *             "sleep_hours": 13,
+ *             "mood_waking": 3,
+ *             "mood_day": 1,
+ *             "mood_bedtime": 1
  *         },
  *         {
- *            "id": 3,
- *            "sleep_start": 1586048400000,
- *            "sleep_end": 1586073600000,
- *            "sleep_goal": 9,
- *            "user_id": 3
- *         },
- *    ]
+ *             "id": 3,
+ *             "user_id": 3,
+ *             "sleep_start": "1585947600000",
+ *             "sleep_end": "1585969200000",
+ *             "start_formatted": "04/03/2020 9:00 PM",
+ *             "end_formatted": "04/04/2020 3:00 AM",
+ *             "sleep_goal": 10,
+ *             "sleep_hours": 6,
+ *             "mood_waking": 3,
+ *             "mood_day": 1,
+ *             "mood_bedtime": 4
+ *         }
+ *     ]
  * }
  * @apiUse AuthError
  */
@@ -122,14 +140,20 @@ router.get("/", async (req, res) => {
  *    "message": "Success",
  *    "validation": [],
  *    "data": [
- *      {
- *          "id": 4,
- *          "sleep_start": 1586048400000,
- *          "sleep_end": 1586073600000,
- *          "sleep_goal": 9,
- *          "user_id": 3
- *      }
- *    ]
+ *        {
+ *             "id": 1,
+ *             "user_id": 3,
+ *             "sleep_start": "1585782000000",
+ *             "sleep_end": "1585832400000",
+ *             "start_formatted": "04/01/2020 11:00 PM",
+ *             "end_formatted": "04/02/2020 1:00 PM",
+ *             "sleep_goal": 11,
+ *             "sleep_hours": 14,
+ *             "mood_waking": 4,
+ *             "mood_day": 1,
+ *             "mood_bedtime": 4
+ *         }
+ *     ]
  * }
  * @apiUse AuthError
  */

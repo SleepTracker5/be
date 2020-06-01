@@ -6,7 +6,7 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 - [Deployment](#Deployment)
   - [Heroku](#Heroku)
-- [Data_Standardization](#Data_Standardization)
+- [Data Standardization](#Data_Standardization)
   - [Tips for Accessing the Data Using Axios](#Tips-for-Accessing-the-Data-Using-Axios)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
@@ -34,7 +34,7 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 <p>The API is deployed on the Heroku free tier. Please allow 5-10 seconds for Heroku to &quot;wake up&quot; the connection when using an endpoint for the first time that day.</p> <p>The url to the deployed server is: https://sleeptrackerbw.herokuapp.com/</p>
 
-# <a name='Data_Standardization'></a> Data_Standardization
+# <a name='Data_Standardization'></a> Data Standardization
 
 ## <a name='Tips-for-Accessing-the-Data-Using-Axios'></a> Tips for Accessing the Data Using Axios
 
@@ -42,7 +42,7 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 <p>Since axios returns data in an object that also has a <code>data</code> property, you should plan to access the data from the API requests by referencing <code>res.data.data</code>. If you would prefer to rename the <code>data</code> property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from <code>data</code> to <code>body</code> (to mimic the shape returned by the fetch API)</p>
 
-### Standard Response Shape
+### Standard Response Parameters - `Parameter`
 
 | Name       | Type     | Description                                                   |
 | ---------- | -------- | ------------------------------------------------------------- |
@@ -116,7 +116,7 @@ POST /api/login
 
 ### Success response
 
-#### Success response - `Created 201`
+#### Success response - `Success 200`
 
 | Name | Type     | Description                          |
 | ---- | -------- | ------------------------------------ |
@@ -203,7 +203,7 @@ POST /api/register
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `Created 201`
 
 | Name | Type     | Description                                    |
 | ---- | -------- | ---------------------------------------------- |
@@ -405,28 +405,46 @@ HTTP/1.1 200: OK
   "message": "Success",
   "validation": [],
   "data": [
-        {
-           "id": 1,
-           "sleep_start": 1585800000000,
-           "sleep_end": 1585843200000,
-           "sleep_goal": 6,
-           "user_id": 3
+       {
+            "id": 1,
+            "user_id": 3,
+            "sleep_start": "1585782000000",
+            "sleep_end": "1585832400000",
+            "start_formatted": "04/01/2020 11:00 PM",
+            "end_formatted": "04/02/2020 1:00 PM",
+            "sleep_goal": 11,
+            "sleep_hours": 14,
+            "mood_waking": 4,
+            "mood_day": 1,
+            "mood_bedtime": 4
         },
         {
-           "id": 2,
-           "sleep_start": 1585886400000,
-           "sleep_end": 1585940400000,
-           "sleep_goal": 11,
-           "user_id": 3
+            "id": 2,
+            "user_id": 3,
+            "sleep_start": "1585868400000",
+            "sleep_end": "1585915200000",
+            "start_formatted": "04/02/2020 11:00 PM",
+            "end_formatted": "04/03/2020 12:00 PM",
+            "sleep_goal": 8,
+            "sleep_hours": 13,
+            "mood_waking": 3,
+            "mood_day": 1,
+            "mood_bedtime": 1
         },
         {
-           "id": 3,
-           "sleep_start": 1586048400000,
-           "sleep_end": 1586073600000,
-           "sleep_goal": 9,
-           "user_id": 3
-        },
-   ]
+            "id": 3,
+            "user_id": 3,
+            "sleep_start": "1585947600000",
+            "sleep_end": "1585969200000",
+            "start_formatted": "04/03/2020 9:00 PM",
+            "end_formatted": "04/04/2020 3:00 AM",
+            "sleep_goal": 10,
+            "sleep_hours": 6,
+            "mood_waking": 3,
+            "mood_day": 1,
+            "mood_bedtime": 4
+        }
+    ]
 }
 ```
 
@@ -471,14 +489,20 @@ HTTP/1.1 200: OK
    "message": "Success",
    "validation": [],
    "data": [
-     {
-         "id": 4,
-         "sleep_start": 1586048400000,
-         "sleep_end": 1586073600000,
-         "sleep_goal": 9,
-         "user_id": 3
-     }
-   ]
+       {
+            "id": 1,
+            "user_id": 3,
+            "sleep_start": "1585782000000",
+            "sleep_end": "1585832400000",
+            "start_formatted": "04/01/2020 11:00 PM",
+            "end_formatted": "04/02/2020 1:00 PM",
+            "sleep_goal": 11,
+            "sleep_hours": 14,
+            "mood_waking": 4,
+            "mood_day": 1,
+            "mood_bedtime": 4
+        }
+    ]
 }
 ```
 
