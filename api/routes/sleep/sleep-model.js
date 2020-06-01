@@ -16,7 +16,7 @@ function find(query) {
 function findBy(field, query) {
   // Timestamps run from 1900-01-01 to 9999-12-31
   // Pagination support helps with scalability 
-  let { start = -2208970800000, end = 253402232400000, limit = 20, page = 1 } = query ? query : {};
+  let { start = -2208970800000, end = 253402232400000, limit = 5000, page = 1 } = query ? query : {};
   const rowOffset = limit * (page - 1);
   return db("sleep as s")
     .where(field)
