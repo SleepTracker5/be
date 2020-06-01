@@ -288,14 +288,10 @@ router.put("/:id", validateSleepId, async (req, res) => {
     // @ts-ignore
     const sleepId = isIterable(sleep) ? sleep[0].id : sleep.id;
     const moods = await moodDb.findBySleepId(sleepId);
-    console.log("update>Moods currently in db:", moods);
-    console.log("update>sleepId:", sleepId);
-    console.log("update>moodData:", moodData);
     await updateMoodData(sleepId, moods, moodData);
     // combine the data together into a unified request shape
     const sleepToMerge = isIterable(sleep) ? sleep[0] : sleep;
     const moodToMerge = await moodDb.findBySleepId(sleepToMerge.id);
-    console.log("Before update>combineData:", sleepToMerge, moodToMerge);
     const updatedSleep = await combineData(sleepToMerge, moodToMerge);
     res.status(200).json({
       message: `The sleep entry has been successfully updated`,
@@ -335,8 +331,17 @@ router.put("/:id", validateSleepId, async (req, res) => {
 router.delete("/:id", validateSleepId, async (req, res) => {
   try {
     const id = req.params.id;
+    if (!id) {
+      return res.status(400).json({
+        message: "Bad Request",
+        validation: [
+          "Unable to locate a URL parameter indicating which record to delete",
+        ],
+        data: {},
+      });
+    }
     await remove(id);
-    res.status(200).json({
+    res.status(204).json({
       message: `The sleep entry with id ${id} has been successfully deleted`,
       validation: [],
       data: {},
@@ -381,12 +386,6 @@ async function combineData(sleepData, moodData) {
   const mood_waking = moodData.find(obj => obj.order === 1);
   const mood_day = moodData.find(obj => obj.order === 2);
   const mood_bedtime = moodData.find(obj => obj.order === 3);
-  console.log(
-    "update>combineData moods found:",
-    mood_waking,
-    mood_day,
-    mood_bedtime,
-  );
   const obj = {
     id: sleepData.id,
     user_id: sleepData.user_id,
@@ -416,7 +415,6 @@ async function combineData(sleepData, moodData) {
  * @returns None
  */
 async function insertMoodData(sleepId, moodData) {
-  console.log("insertMoodData args:", sleepId, moodData);
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   const inserted = [];
   const keys = Object.keys(moodData);
@@ -433,9 +431,7 @@ async function insertMoodData(sleepId, moodData) {
       inserted.push(mood);
     }
   }
-  const resolved = inserted;
-  console.log("added, resolved:", resolved);
-  return resolved;
+  return inserted;
 }
 
 /**
@@ -446,7 +442,6 @@ async function insertMoodData(sleepId, moodData) {
  * @returns None
  */
 async function updateMoodData(sleepId, moods, moodData) {
-  console.log("updateMoodArgs:", sleepId, moods, moodData);
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   const updated = [];
   const keys = Object.keys(moodData);
@@ -466,7 +461,7 @@ async function updateMoodData(sleepId, moods, moodData) {
       updated.push(update);
     }
   }
-  return Promise.all(updated);
+  return updated;
 }
 
 /**
