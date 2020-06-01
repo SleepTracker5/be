@@ -34,7 +34,10 @@ const randRange = (lower, upper) =>
   Math.floor(Math.random() * (upper - lower + 1)) + lower;
 
 const isIterable = obj => {
-  return !(obj === null) && typeof obj[Symbol.iterator] === "function";
+  if (!obj) {
+    return false;
+  }
+  return typeof obj[Symbol.iterator] === "function";
 };
 
 module.exports = {
