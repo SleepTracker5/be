@@ -264,7 +264,7 @@ DELETE /api/mood/:id
 #### Success response example - `Success Response:`
 
 ```json
-HTTP/1.1 204: No Content
+HTTP/1.1 200: Success
 {
   "message": "The mood entry with id 1 has been successfully deleted",
   "validation": [],

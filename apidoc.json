@@ -1,6 +1,6 @@
 {
   "name": "Sleep Tracker API Documentation",
-  "version": "1.1.45",
+  "version": "1.1.57",
   "description": "A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.",
   "template": {
     "forceLanguage": "en"
