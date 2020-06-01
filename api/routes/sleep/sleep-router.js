@@ -12,6 +12,28 @@ const userPermissionLevel = 1;
 const millisecondsInOneHour = 1000 * 60 * 60;
 
 // Routes
+
+// apiDoc error definitions
+/**
+ * @apiDefine AuthError
+ * @apiErrorExample {json} Invalid Credentials:
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
+
+/**
+ * @apiDefine ServerError
+ * @apiErrorExample {json} Server Error (e.g. malformed or empty request sent):
+ * {
+ *  "message": "There was a problem completing the required operation",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
+
 /**
  * @api {get} /api/sleep?start='dateHere'&end='dateHere' Get All Sleep
  * @apiGroup Sleep
@@ -46,12 +68,7 @@ const millisecondsInOneHour = 1000 * 60 * 60;
  *         },
  *    ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
  */
 router.get("/", async (req, res) => {
   try {
@@ -106,12 +123,7 @@ router.get("/", async (req, res) => {
  *      }
  *    ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
  */
 
 router.get("/:id", async (req, res) => {
@@ -179,18 +191,8 @@ router.get("/:id", async (req, res) => {
  *       }
  *   ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
- * @apiErrorExample {json} Server Error (e.g. empty json sent):
- * {
- *  "message": "There was a problem completing the required operation",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
+
  */
 router.post("/", async (req, res) => {
   try {
@@ -253,18 +255,8 @@ router.post("/", async (req, res) => {
  *       }
  *   ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
- * @apiErrorExample {json} Server Error (e.g. empty update sent):
- * {
- *  "message": "There was a problem completing the required operation",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
+ * @apiUse ServerError
  */
 router.put("/:id", validateSleepId, async (req, res) => {
   try {
@@ -315,18 +307,8 @@ router.put("/:id", validateSleepId, async (req, res) => {
  *   "validation": [],
  *   "data": {}
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
- * @apiErrorExample {json} Server Error (e.g. empty update sent):
- * {
- *  "message": "There was a problem completing the required operation",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
+ * @apiUse ServerError
  */
 router.delete("/:id", validateSleepId, async (req, res) => {
   try {
@@ -378,7 +360,7 @@ async function validateSleepId(req, res, next) {
 }
 
 /**
- * @function combineData Returns an object with the requisite shape
+ * @function combineData Returns an object combined from two sources, with the requisite shape
  * @param {Object} sleepData An object containing the sleep data
  * @returns {Promise} A promise that resolves to an object with the added mood data
  */
