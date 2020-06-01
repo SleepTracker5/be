@@ -15,8 +15,8 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
   - [Delete a mood record by id](#Delete-a-mood-record-by-id)
 - [Sleep](#Sleep)
   - [Delete a sleep record by id](#Delete-a-sleep-record-by-id)
-  - [Get Sleep by Id](#Get-Sleep-by-Id)
   - [Get All Sleep](#Get-All-Sleep)
+  - [Get Sleep by Id](#Get-Sleep-by-Id)
   - [Insert a sleep record](#Insert-a-sleep-record)
   - [Update a sleep record by id](#Update-a-sleep-record-by-id)
 - [Users](#Users)
@@ -42,7 +42,7 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 <p>Since axios returns data in an object that also has a <code>data</code> property, you should plan to access the data from the API requests by referencing <code>res.data.data</code>. If you would prefer to rename the <code>data</code> property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from <code>data</code> to <code>body</code> (to mimic the shape returned by the fetch API)</p>
 
-### Standard Request Shape
+### Standard Response Shape
 
 | Name       | Type     | Description                                                   |
 | ---------- | -------- | ------------------------------------------------------------- |
@@ -50,9 +50,9 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 | validation | `Array`  | <p>An array of validation errors</p>                          |
 | data       | `Object` | <p>An object containing any data returned by the resource</p> |
 
-### Success response example
+### Response example
 
-#### Success response example - `Standard Response Shape`
+#### Response example - `Standard Response Shape`
 
 ```json
 HTTP 1.1/*
@@ -63,7 +63,7 @@ HTTP 1.1/*
 }
 ```
 
-#### Success response example - `Using Axios Interceptors to Reshape the Response`
+#### Using Axios Interceptors to Reshape the Response
 
 ```axios-interceptor-example.js
 export const axiosWithAuth = () => {
@@ -338,71 +338,22 @@ HTTP/1.1 204: No Content
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
 #### Error response example - `Server Error (e.g. malformed or empty request sent):`
 
 ```json
+HTTP/1.1 500: Server Error
 {
-  "message": "There was a problem completing the required operation",
-  "validation": [],
-  "data": {}
-}
-```
-
-## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
-
-[Back to top](#top)
-
-<p>Get Sleep By Id</p>
-
-```
-GET /api/sleep/:id
-```
-
-### Success response
-
-#### Success response - `Success 200`
-
-| Name  | Type    | Description                                               |
-| ----- | ------- | --------------------------------------------------------- |
-| sleep | `Array` | <p>An array with an object with the sleep information</p> |
-
-### Success response example
-
-#### Success response example - `Success Response:`
-
-```json
-HTTP/1.1 200: OK
-{
-   "message": "Success",
-   "validation": [],
-   "data": [
-     {
-         "id": 4,
-         "sleep_start": 1586048400000,
-         "sleep_end": 1586073600000,
-         "sleep_goal": 9,
-         "user_id": 3
-     }
-   ]
-}
-```
-
-### Error response example
-
-#### Error response example - `Invalid Credentials:`
-
-```json
-{
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "There was a problem completing the required operation",
+ "validation": [],
+ "data": {}
 }
 ```
 
@@ -410,10 +361,24 @@ HTTP/1.1 200: OK
 
 [Back to top](#top)
 
-<p>Get All Sleep, with optional query string to request data within a date range</p>
+<p>Get All Sleep, with optional query string support</p>
 
 ```
-GET /api/sleep?start=&#39;dateHere&#39;&amp;end=&#39;dateHere&#39;
+GET /api/sleep
+```
+
+### Examples
+
+Using `start` and `end` query params to filter the data by date:
+
+```json
+GET /api/sleep?start='4/01/2020'&end='4/17/2020'
+```
+
+Combine both date and pagination query string params if desired
+
+```json
+GET /api/sleep?start='4/01/2020'&end='4/17/2020'&limit=10&page=2
 ```
 
 ### Success response
@@ -464,10 +429,63 @@ HTTP/1.1 200: OK
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
+}
+```
+
+## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
+
+[Back to top](#top)
+
+<p>Get Sleep By Id</p>
+
+```
+GET /api/sleep/:id
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                               |
+| ----- | ------- | --------------------------------------------------------- |
+| sleep | `Array` | <p>An array with an object with the sleep information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+   "message": "Success",
+   "validation": [],
+   "data": [
+     {
+         "id": 4,
+         "sleep_start": 1586048400000,
+         "sleep_end": 1586073600000,
+         "sleep_goal": 9,
+         "user_id": 3
+     }
+   ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+HTTP/1.1 401: Unauthorized
+{
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
@@ -545,10 +563,11 @@ HTTP/1.1 201: Created
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
@@ -615,20 +634,22 @@ HTTP/1.1 200: OK
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
 #### Error response example - `Server Error (e.g. malformed or empty request sent):`
 
 ```json
+HTTP/1.1 500: Server Error
 {
-  "message": "There was a problem completing the required operation",
-  "validation": [],
-  "data": {}
+ "message": "There was a problem completing the required operation",
+ "validation": [],
+ "data": {}
 }
 ```
 

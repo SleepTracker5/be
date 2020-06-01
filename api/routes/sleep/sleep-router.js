@@ -17,6 +17,7 @@ const millisecondsInOneHour = 1000 * 60 * 60;
 /**
  * @apiDefine AuthError
  * @apiErrorExample {json} Invalid Credentials:
+ * HTTP/1.1 401: Unauthorized
  * {
  *  "message": "Invalid Credentials",
  *  "validation": [],
@@ -27,6 +28,7 @@ const millisecondsInOneHour = 1000 * 60 * 60;
 /**
  * @apiDefine ServerError
  * @apiErrorExample {json} Server Error (e.g. malformed or empty request sent):
+ * HTTP/1.1 500: Server Error
  * {
  *  "message": "There was a problem completing the required operation",
  *  "validation": [],
@@ -35,9 +37,15 @@ const millisecondsInOneHour = 1000 * 60 * 60;
  */
 
 /**
- * @api {get} /api/sleep?start='dateHere'&end='dateHere' Get All Sleep
+ * @api {get} /api/sleep Get All Sleep
+ * @apiExample {json} Using `start` and `end` query params to filter the data by date:
+ *    GET /api/sleep?start='4/01/2020'&end='4/17/2020'
+ * @apiExaxmple {json} Use the `page` and `limit` query params to enable pagination
+ *    GET /api/sleep?limit=10&page=2
+ * @apiExample {json} Combine both date and pagination query string params if desired
+ *    GET /api/sleep?start='4/01/2020'&end='4/17/2020'&limit=10&page=2
  * @apiGroup Sleep
- * @apiDescription Get All Sleep, with optional query string to request data within a date range
+ * @apiDescription Get All Sleep, with optional query string support
  * @apiSuccess {Array} sleep An array of objects with the sleep information
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200: OK
