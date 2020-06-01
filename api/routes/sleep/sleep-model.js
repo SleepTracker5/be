@@ -15,10 +15,14 @@ function find(query) {
 // prettier-ignore
 function findBy(field, query) {
   // Timestamps run from 1900-01-01 to 9999-12-31
-  let { start = -2208970800000, end = 253402232400000 } = query ? query : {};
+  // Pagination support helps with scalability 
+  let { start = -2208970800000, end = 253402232400000, limit = 20, page = 1 } = query ? query : {};
+  const rowOffset = limit * (page - 1);
   return db("sleep as s")
     .where(field)
     .whereBetween("s.sleep_start", [start, end])
+    .offset(rowOffset)
+    .limit(limit)
     .orderBy("s.sleep_start")
 }
 
