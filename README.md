@@ -375,6 +375,12 @@ Using `start` and `end` query params to filter the data by date:
 GET /api/sleep?start='4/01/2020'&end='4/17/2020'
 ```
 
+Use the `page` and `limit` query params to enable pagination:
+
+```json
+GET /api/sleep?limit=10&page=2
+```
+
 Combine both date and pagination query string params if desired
 
 ```json
