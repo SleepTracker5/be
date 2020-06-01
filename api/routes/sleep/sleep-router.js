@@ -341,7 +341,7 @@ router.delete("/:id", validateSleepId, async (req, res) => {
       });
     } else {
       await remove(id);
-      return res.status(204).json({
+      return res.status(200).json({
         message: `The sleep entry with id ${id} has been successfully deleted`,
         validation: [],
         data: {},
