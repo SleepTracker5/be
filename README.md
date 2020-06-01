@@ -197,7 +197,7 @@ POST /api/register
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `Created 201`
 
 | Name | Type     | Description                                    |
 | ---- | -------- | ---------------------------------------------- |
@@ -308,7 +308,7 @@ DELETE /api/sleep/:id
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `No Content 204`
 
 | Name    | Type     | Description                                                   |
 | ------- | -------- | ------------------------------------------------------------- |
@@ -407,7 +407,7 @@ HTTP/1.1 200: OK
 <p>Get All Sleep, with optional query string to request data within a date range</p>
 
 ```
-GET /api/sleep?start=&#39;dateHere&#39;&amp;end=&#39;dateHere&#39;
+GET /api/sleep?start='startDateHere'&end='endDateHere';
 ```
 
 ### Success response
@@ -504,7 +504,7 @@ POST /api/sleep
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `Created 201`
 
 | Name  | Type    | Description                                          |
 | ----- | ------- | ---------------------------------------------------- |
