@@ -244,8 +244,8 @@ describe("the sleep route", () => {
       const del = await request(server)
         .delete(`/api/sleep/${res.body.data.id}`)
         .set({ authorization: token });
-      expect(del.statusCode).toBe(204);
-      expect(del.type).not.toBeDefined;
+      expect(del.statusCode).toBe(200);
+      expect(del.type).toBe("application/json");
 
       done();
     } catch (err) {

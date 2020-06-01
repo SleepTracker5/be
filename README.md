@@ -1,13 +1,13 @@
 <a name="top"></a>
 
-# Sleep Tracker API Documentation v1.1.45
+# Sleep Tracker API Documentation v1.1.57
 
 A Postgres API server using Node, Express, bcrypt and token-based authentication using JWTs.
 
 - [Deployment](#Deployment)
   - [Heroku](#Heroku)
-- [Data Standardization](#Data-Standardization)
-  - [Response Shape](#Response-Shape)
+- [Data_Standardization](#Data_Standardization)
+  - [Tips for Accessing the Data Using Axios](#Tips-for-Accessing-the-Data-Using-Axios)
 - [Auth](#Auth)
   - [Login a User](#Login-a-User)
   - [Registers a new user](#Registers-a-new-user)
@@ -30,51 +30,57 @@ A Postgres API server using Node, Express, bcrypt and token-based authentication
 
 ## <a name='Heroku'></a> Heroku
 
-<p>The API is deployed on the Heroku free tier. Please allow 5-10 seconds for Heroku to "wake up" the connection when using an endpoint for the first time that day.
+[Back to top](#top)
 
-The url to the deployed server is: [https://sleeptrackerbw.herokuapp.com/](https://sleeptrackerbw.herokuapp.com/)</p>
+<p>The API is deployed on the Heroku free tier. Please allow 5-10 seconds for Heroku to &quot;wake up&quot; the connection when using an endpoint for the first time that day.</p> <p>The url to the deployed server is: https://sleeptrackerbw.herokuapp.com/</p>
 
-# <a name='Data-Standarization'></a> Data Standardization
+# <a name='Data_Standardization'></a> Data_Standardization
 
-## <a name='Response-Shape'></a> Response Shape
+## <a name='Tips-for-Accessing-the-Data-Using-Axios'></a> Tips for Accessing the Data Using Axios
 
-<p>The API responses conform to a standard shape comprised of the following properties:
+[Back to top](#top)
 
-| Name       | Type     | Description                                              |
-| ---------- | -------- | -------------------------------------------------------- |
-| message    | `String` | <p>A status message indicating the request status</p>    |
-| validation | `Array`  | <p>An array of validation errors</p>                     |
-| data       | `Object` | <p>An object containing any data returned by the API</p> |
+<p>Since axios returns data in an object that also has a <code>data</code> property, you should plan to access the data from the API requests by referencing <code>res.data.data</code>. If you would prefer to rename the <code>data</code> property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from <code>data</code> to <code>body</code> (to mimic the shape returned by the fetch API)</p>
 
-`json` - Standard Response Shape Example:
+### Standard Response Shape
+
+| Name       | Type     | Description                                                   |
+| ---------- | -------- | ------------------------------------------------------------- |
+| message    | `String` | <p>A status message</p>                                       |
+| validation | `Array`  | <p>An array of validation errors</p>                          |
+| data       | `Object` | <p>An object containing any data returned by the resource</p> |
+
+### Response example
+
+#### Response example - `Standard Response Shape`
 
 ```json
+HTTP 1.1/*
 {
-  "message": "",
-  "validation": [],
-  "data": {}
+ "message": "",
+ "validation": [],
+ "data": {}
 }
 ```
 
-## Tips for Accessing the Data Using Axios
-
-<p>Since axios returns data in an object that also has a `data` property, you should plan to access the data from the API requests by referencing `res.data.data`. If you would prefer to rename the `data` property of the object returned by axios, then using interceptors is probably the most expedient method to rename it from `data` to `body` (to mimic the shape returned by the fetch API)</p>
+#### Using Axios Interceptors to Reshape the Response
 
 ```axios-interceptor-example.js
 export const axiosWithAuth = () => {
-  const instance = axios.create({
-    baseURL: "http://localhost:5000/api",
-    headers: {
-      authorization: localStorage.getItem("token"),
-    },
-  });
-  // Reshape the response to avoid res.data.data
-  instance.interceptors.response.use((response) => {
-    const body = { ...response.data };
-    delete response.data; // remove the data property
-    return { ...response, body };
-  });
-  return instance;
+ const instance = axios.create({
+   baseURL: "http://localhost:5000/api",
+   headers: {
+     authorization: localStorage.getItem("token"),
+   },
+ });
+ // Reshape the response to avoid res.data.data
+ // Use the res.body shape, similar to the fetch API
+ instance.interceptors.response.use((response) => {
+   const body = { ...response.data };
+   delete response.data; // remove the data property
+   return { ...response, body };
+ });
+ return instance
 };
 ```
 
@@ -110,7 +116,7 @@ POST /api/login
 
 ### Success response
 
-#### Success response - `Success 200`
+#### Success response - `Created 201`
 
 | Name | Type     | Description                          |
 | ---- | -------- | ------------------------------------ |
@@ -197,7 +203,7 @@ POST /api/register
 
 ### Success response
 
-#### Success response - `Created 201`
+#### Success response - `Success 200`
 
 | Name | Type     | Description                                    |
 | ---- | -------- | ---------------------------------------------- |
@@ -308,7 +314,7 @@ DELETE /api/sleep/:id
 
 ### Success response
 
-#### Success response - `No Content 204`
+#### Success response - `Success 200`
 
 | Name    | Type     | Description                                                   |
 | ------- | -------- | ------------------------------------------------------------- |
@@ -332,71 +338,22 @@ HTTP/1.1 204: No Content
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
-#### Error response example - `Server Error (e.g. empty update sent):`
+#### Error response example - `Server Error (e.g. malformed or empty request sent):`
 
 ```json
+HTTP/1.1 500: Server Error
 {
-  "message": "There was a problem completing the required operation",
-  "validation": [],
-  "data": {}
-}
-```
-
-## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
-
-[Back to top](#top)
-
-<p>Get Sleep By Id</p>
-
-```
-GET /api/sleep/:id
-```
-
-### Success response
-
-#### Success response - `Success 200`
-
-| Name  | Type    | Description                                               |
-| ----- | ------- | --------------------------------------------------------- |
-| sleep | `Array` | <p>An array with an object with the sleep information</p> |
-
-### Success response example
-
-#### Success response example - `Success Response:`
-
-```json
-HTTP/1.1 200: OK
-{
-   "message": "Success",
-   "validation": [],
-   "data": [
-     {
-         "id": 4,
-         "sleep_start": 1586048400000,
-         "sleep_end": 1586073600000,
-         "sleep_goal": 9,
-         "user_id": 3
-     }
-   ]
-}
-```
-
-### Error response example
-
-#### Error response example - `Invalid Credentials:`
-
-```json
-{
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "There was a problem completing the required operation",
+ "validation": [],
+ "data": {}
 }
 ```
 
@@ -404,10 +361,30 @@ HTTP/1.1 200: OK
 
 [Back to top](#top)
 
-<p>Get All Sleep, with optional query string to request data within a date range</p>
+<p>Get All Sleep, with optional query string support</p>
 
 ```
-GET /api/sleep?start='startDateHere'&end='endDateHere';
+GET /api/sleep
+```
+
+### Examples
+
+Using `start` and `end` query params to filter the data by date:
+
+```json
+GET /api/sleep?start='4/01/2020'&end='4/17/2020'
+```
+
+Use the `page` and `limit` query params to enable pagination:
+
+```json
+GET /api/sleep?limit=10&page=2
+```
+
+Combine both date and pagination query string params if desired
+
+```json
+GET /api/sleep?start='4/01/2020'&end='4/17/2020'&limit=10&page=2
 ```
 
 ### Success response
@@ -458,10 +435,63 @@ HTTP/1.1 200: OK
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
+}
+```
+
+## <a name='Get-Sleep-by-Id'></a> Get Sleep by Id
+
+[Back to top](#top)
+
+<p>Get Sleep By Id</p>
+
+```
+GET /api/sleep/:id
+```
+
+### Success response
+
+#### Success response - `Success 200`
+
+| Name  | Type    | Description                                               |
+| ----- | ------- | --------------------------------------------------------- |
+| sleep | `Array` | <p>An array with an object with the sleep information</p> |
+
+### Success response example
+
+#### Success response example - `Success Response:`
+
+```json
+HTTP/1.1 200: OK
+{
+   "message": "Success",
+   "validation": [],
+   "data": [
+     {
+         "id": 4,
+         "sleep_start": 1586048400000,
+         "sleep_end": 1586073600000,
+         "sleep_goal": 9,
+         "user_id": 3
+     }
+   ]
+}
+```
+
+### Error response example
+
+#### Error response example - `Invalid Credentials:`
+
+```json
+HTTP/1.1 401: Unauthorized
+{
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
@@ -539,20 +569,11 @@ HTTP/1.1 201: Created
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
-}
-```
-
-#### Error response example - `Server Error (e.g. empty json sent):`
-
-```json
-{
-  "message": "There was a problem completing the required operation",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
@@ -619,20 +640,22 @@ HTTP/1.1 200: OK
 #### Error response example - `Invalid Credentials:`
 
 ```json
+HTTP/1.1 401: Unauthorized
 {
-  "message": "Invalid Credentials",
-  "validation": [],
-  "data": {}
+ "message": "Invalid Credentials",
+ "validation": [],
+ "data": {}
 }
 ```
 
-#### Error response example - `Server Error (e.g. empty update sent):`
+#### Error response example - `Server Error (e.g. malformed or empty request sent):`
 
 ```json
+HTTP/1.1 500: Server Error
 {
-  "message": "There was a problem completing the required operation",
-  "validation": [],
-  "data": {}
+ "message": "There was a problem completing the required operation",
+ "validation": [],
+ "data": {}
 }
 ```
 

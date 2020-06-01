@@ -12,10 +12,40 @@ const userPermissionLevel = 1;
 const millisecondsInOneHour = 1000 * 60 * 60;
 
 // Routes
+
+// apiDoc error definitions
 /**
- * @api {get} /api/sleep?start='dateHere'&end='dateHere' Get All Sleep
+ * @apiDefine AuthError
+ * @apiErrorExample {json} Invalid Credentials:
+ * HTTP/1.1 401: Unauthorized
+ * {
+ *  "message": "Invalid Credentials",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
+
+/**
+ * @apiDefine ServerError
+ * @apiErrorExample {json} Server Error (e.g. malformed or empty request sent):
+ * HTTP/1.1 500: Server Error
+ * {
+ *  "message": "There was a problem completing the required operation",
+ *  "validation": [],
+ *  "data": {}
+ * }
+ */
+
+/**
+ * @api {get} /api/sleep Get All Sleep
+ * @apiExample {json} Using `start` and `end` query params to filter the data by date:
+ *    GET /api/sleep?start='4/01/2020'&end='4/17/2020'
+ * @apiExample {json} Use the `page` and `limit` query params to enable pagination:
+ *    GET /api/sleep?limit=10&page=2
+ * @apiExample {json} Combine both date and pagination query string params if desired
+ *    GET /api/sleep?start='4/01/2020'&end='4/17/2020'&limit=10&page=2
  * @apiGroup Sleep
- * @apiDescription Get All Sleep, with optional query string to request data within a date range
+ * @apiDescription Get All Sleep, with optional query string support
  * @apiSuccess {Array} sleep An array of objects with the sleep information
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200: OK
@@ -46,12 +76,7 @@ const millisecondsInOneHour = 1000 * 60 * 60;
  *         },
  *    ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
  */
 router.get("/", async (req, res) => {
   try {
@@ -106,12 +131,7 @@ router.get("/", async (req, res) => {
  *      }
  *    ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
  */
 
 router.get("/:id", async (req, res) => {
@@ -179,18 +199,8 @@ router.get("/:id", async (req, res) => {
  *       }
  *   ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
- * @apiErrorExample {json} Server Error (e.g. empty json sent):
- * {
- *  "message": "There was a problem completing the required operation",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
+
  */
 router.post("/", async (req, res) => {
   try {
@@ -253,18 +263,8 @@ router.post("/", async (req, res) => {
  *       }
  *   ]
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
- * @apiErrorExample {json} Server Error (e.g. empty update sent):
- * {
- *  "message": "There was a problem completing the required operation",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
+ * @apiUse ServerError
  */
 router.put("/:id", validateSleepId, async (req, res) => {
   try {
@@ -315,18 +315,8 @@ router.put("/:id", validateSleepId, async (req, res) => {
  *   "validation": [],
  *   "data": {}
  * }
- * @apiErrorExample {json} Invalid Credentials:
- * {
- *  "message": "Invalid Credentials",
- *  "validation": [],
- *  "data": {}
- * }
- * @apiErrorExample {json} Server Error (e.g. empty update sent):
- * {
- *  "message": "There was a problem completing the required operation",
- *  "validation": [],
- *  "data": {}
- * }
+ * @apiUse AuthError
+ * @apiUse ServerError
  */
 router.delete("/:id", validateSleepId, async (req, res) => {
   try {
@@ -339,13 +329,14 @@ router.delete("/:id", validateSleepId, async (req, res) => {
         ],
         data: {},
       });
+    } else {
+      await remove(id);
+      return res.status(200).json({
+        message: `The sleep entry with id ${id} has been successfully deleted`,
+        validation: [],
+        data: {},
+      });
     }
-    await remove(id);
-    res.status(204).json({
-      message: `The sleep entry with id ${id} has been successfully deleted`,
-      validation: [],
-      data: {},
-    });
   } catch (err) {
     errDetail(res, err);
   }
@@ -377,7 +368,7 @@ async function validateSleepId(req, res, next) {
 }
 
 /**
- * @function combineData Returns an object with the requisite shape
+ * @function combineData Returns an object combined from two sources, with the requisite shape
  * @param {Object} sleepData An object containing the sleep data
  * @returns {Promise} A promise that resolves to an object with the added mood data
  */
