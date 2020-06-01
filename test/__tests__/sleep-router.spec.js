@@ -49,11 +49,11 @@ const userLogin = {
   password: hash,
 };
 // Admin test user
-// const testAdmin = {
-//   username: "testUserSleep",
-//   password: hash,
-//   role: 1,
-// };
+const testAdmin = {
+  username: "testAdminSleep",
+  password: hash,
+  role: 2,
+};
 // const adminLogin = {
 //   username: "testAdminSleep",
 //   password: hash,
@@ -80,7 +80,7 @@ const sleepEntry = {
   user_id: 1,
   mood_waking: 3,
   mood_day: 3,
-  mood_evening: 3,
+  mood_bedtime: 3,
 };
 
 // Integration tests
@@ -155,7 +155,6 @@ describe("the sleep route", () => {
       expect(validJWT).toBe(true);
 
       // prettier-ignore
-      console.log("Sending:", sleepEntry)
       const res = await request(server)
         .post("/api/sleep")
         .set({ authorization: token })
@@ -163,7 +162,6 @@ describe("the sleep route", () => {
       expect(res.statusCode).toBe(201);
       expect(res.type).toBe("application/json");
       const sleep = res.body.data;
-      console.log("sleep:", sleep);
       expect(sleep.sleep_start).toBe(sleepEntry.sleep_start);
       expect(sleep.sleep_end).toBe(sleepEntry.sleep_end);
       expect(sleep.sleep_goal).toBe(sleepEntry.sleep_goal);
@@ -175,34 +173,61 @@ describe("the sleep route", () => {
     }
   });
 
-  // it("updates an existing sleep entry", async done => {
-  //   try {
-  //     const param = 1;
-  //     const updatedEntry = {
-  //       sleep_start: 1608549000001,
-  //       sleep_end: 1608552000001,
-  //       sleep_goal: 16,
-  //       user_id: 2,
-  //       mood_waking: 4,
-  //       mood_day: 4,
-  //       mood_bedtime: 4,
-  //     };
-  //     // prettier-ignore
-  //     const res = request(server)
-  //       .put(`/api/sleep/${param}`)
-  //       .send(updatedEntry)
-  //     // Test mood integration a little more rigourously
-  //     // since it is a more fragile test
-  //     expect(res.mood_waking).toBe(4);
-  //     expect(res.mood_waking).not.toBe(3);
-  //     expect(res.mood_day).toBe(4);
-  //     expect(res.mood_day).not.toBe(3);
-  //     expect(res.mood_bedtime).toBe(4);
-  //     expect(res.mood_bedtime).not.toBe(3);
-  //     done();
-  //   } catch (err) {
-  //     console.log(err);
-  //     done(err);
-  //   }
-  // });
+  it("updates an existing sleep entry", async done => {
+    try {
+      // Register a user so that the update can change the user_id to this user id
+      // prettier-ignore
+      const regRes = await request(server)
+        .post("/api/register")
+        .send(testAdmin);
+      expect(regRes.statusCode).toBe(201);
+      // Attempt login
+      // prettier-ignore
+      const loginRes = await request(server)
+        .post("/api/login")
+        .send(userLogin);
+      expect(loginRes.statusCode).toBe(200);
+      expect(loginRes.type).toBe("application/json");
+      expect(loginRes.headers["set-cookie"]).toBeDefined(); // token cookie
+      expect(loginRes.body.data.user.username).toBe(userLogin.username);
+      const token = loginRes.body.data.token;
+      expect(token).toBeDefined();
+      const validJWT = await isVerifiedJWT(token);
+      expect(validJWT).toBe(true);
+      // Add the entry
+      const sleep = await request(server)
+        .post("/api/sleep")
+        .set({ authorization: token })
+        .send(sleepEntry);
+      const sleepInserted = sleep.body.data;
+      // Update the entry
+      const updatedEntry = {
+        sleep_start: 1608549000001,
+        sleep_end: 1608552000001,
+        sleep_goal: 16,
+        user_id: 2,
+        mood_waking: 4,
+        mood_day: 4,
+        mood_bedtime: 4,
+      };
+      // prettier-ignore
+      const res = await request(server)
+        .put(`/api/sleep/${sleepInserted.id}`)
+        .set({ authorization: token })
+        .send(updatedEntry)
+      // Test mood integration a little more rigourously
+      console.log("updated Res", res.body);
+      const updated = res.body.data;
+      expect(updated.mood_waking).toBe(4);
+      expect(updated.mood_waking).not.toBe(3);
+      expect(updated.mood_day).toBe(4);
+      expect(updated.mood_day).not.toBe(3);
+      expect(updated.mood_bedtime).toBe(4);
+      expect(updated.mood_bedtime).not.toBe(3);
+      done();
+    } catch (err) {
+      console.log(err);
+      done(err);
+    }
+  });
 });

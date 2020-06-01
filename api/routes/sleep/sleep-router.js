@@ -416,6 +416,7 @@ async function combineData(sleepData, moodData) {
  * @returns None
  */
 async function insertMoodData(sleepId, moodData) {
+  console.log("insertMoodData args:", sleepId, moodData);
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   const inserted = [];
   const keys = Object.keys(moodData);
@@ -432,7 +433,9 @@ async function insertMoodData(sleepId, moodData) {
       inserted.push(mood);
     }
   }
-  return Promise.all(inserted);
+  const resolved = inserted;
+  console.log("added, resolved:", resolved);
+  return resolved;
 }
 
 /**
@@ -443,14 +446,16 @@ async function insertMoodData(sleepId, moodData) {
  * @returns None
  */
 async function updateMoodData(sleepId, moods, moodData) {
+  console.log("updateMoodArgs:", sleepId, moods, moodData);
   const moodEventOrder = { mood_waking: 1, mood_day: 2, mood_bedtime: 3 };
   const updated = [];
   const keys = Object.keys(moodData);
   for (const key of keys) {
     const moodScore = moodData[key];
-    if (moodScore) {
-      const moodOrder = moodEventOrder[key];
-      const moodId = moods.find(mood => mood.order === moodOrder).id;
+    const moodOrder = moodEventOrder[key];
+    const moodObj = moods.find(mood => mood.order === moodOrder);
+    if (moodObj) {
+      const moodId = moodObj.id;
       const moodDataObj = {
         mood_score: moodScore,
         order: moodOrder,
