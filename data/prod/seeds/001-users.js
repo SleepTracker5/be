@@ -10,7 +10,6 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex("users").insert([
         {
-          id: 1,
           username: "test1",
           password: hash,
           role: 1,
@@ -19,7 +18,6 @@ exports.seed = function (knex) {
           email: "user1@lambda.com",
         },
         {
-          id: 2,
           username: "test2",
           password: hash,
           role: 1,
@@ -28,7 +26,6 @@ exports.seed = function (knex) {
           email: "user2@lambda.com",
         },
         {
-          id: 3,
           username: "test3",
           password: hash,
           role: 1,
@@ -37,7 +34,6 @@ exports.seed = function (knex) {
           email: "user3@lambda.com",
         },
         {
-          id: 4,
           username: "admin1",
           password: hash,
           role: 2,

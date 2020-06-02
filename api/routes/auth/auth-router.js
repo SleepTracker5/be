@@ -10,11 +10,14 @@ const {
 } = require("../../middleware/restricted-middleware");
 const userRoute = require("../users/users-router");
 const sleepRoute = require("../sleep/sleep-router");
+const moodRoute = require("../mood/mood-router");
 router.use("/users", restrictByRole(), userRoute);
 router.use("/sleep", restrict(), sleepRoute);
+router.use("/mood", restrict(), moodRoute);
 
 // Db helper fns
 const { findBy, insert } = require("../users/users-model");
+const { isIterable } = require("../../utils/utils");
 
 // Constants
 const authError = {
@@ -72,8 +75,11 @@ router.post("/register", validateUniqueUsername, async (req, res) => {
     const hash = bcrypt.hashSync(req.body.password, Number(process.env.HASHES));
     user.password = hash;
     const newUser = await insert(user);
+    const newUsername = isIterable(newUser)
+      ? newUser[0].username
+      : newUser.username;
     res.status(201).json({
-      message: `Registered ${newUser.username} successfully`,
+      message: `Registered ${newUsername} successfully`,
       validation: [],
       data: { user: newUser },
     });

@@ -33,4 +33,17 @@ function validateTime(time) {
 const randRange = (lower, upper) =>
   Math.floor(Math.random() * (upper - lower + 1)) + lower;
 
-module.exports = { errDetail, sanitizeUser, validateTime, randRange };
+const isIterable = obj => {
+  if (!obj) {
+    return false;
+  }
+  return typeof obj[Symbol.iterator] === "function";
+};
+
+module.exports = {
+  errDetail,
+  sanitizeUser,
+  validateTime,
+  randRange,
+  isIterable,
+};
