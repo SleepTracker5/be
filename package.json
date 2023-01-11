@@ -73,7 +73,7 @@
     "express": "^4.17.1",
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.20.15",
+    "knex": "^2.4.0",
     "moment": "^2.26.0",
     "moment-random": "^1.0.5",
     "moment-timezone": "^0.5.31",
